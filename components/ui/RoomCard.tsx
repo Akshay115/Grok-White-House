@@ -12,9 +12,10 @@ type RoomCardProps = {
   roomKey: RoomKey;
   imageSrc: string;
   roomNumber: string;
+  onSelect?: (key: RoomKey) => void;
 };
 
-export default function RoomCard({ roomKey, imageSrc, roomNumber }: RoomCardProps) {
+export default function RoomCard({ roomKey, imageSrc, roomNumber, onSelect }: RoomCardProps) {
   const t = useTranslations('rooms');
   const cardRef = useRef<HTMLElement>(null);
 
@@ -66,7 +67,8 @@ export default function RoomCard({ roomKey, imageSrc, roomNumber }: RoomCardProp
     <article
       ref={cardRef}
       data-room-card
-      className="group flex min-h-[520px] w-full flex-col overflow-hidden bg-white opacity-0 transition-shadow duration-500 hover:shadow-[0_20px_60px_rgba(200,169,110,0.15)]"
+      onClick={() => onSelect?.(roomKey)}
+      className="sculptural-card group flex min-h-[520px] w-full cursor-pointer flex-col overflow-hidden opacity-0"
       style={{ transformStyle: 'preserve-3d' }}
     >
       {/* Image area — 60% */}
@@ -76,14 +78,20 @@ export default function RoomCard({ roomKey, imageSrc, roomNumber }: RoomCardProp
             src={imageSrc}
             alt={t(`items.${roomKey}.name`)}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08]"
             sizes="(max-width: 768px) 100vw, (max-width: 1279px) 50vw, 25vw"
           />
+
+          {/* Fluid hover overlay with text reveal — villa suite exploration feel */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-x-0 bottom-0 p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+            <div className="text-white text-sm font-medium tracking-[1px] uppercase">Explore this suite →</div>
+          </div>
         </div>
 
         <span
-          className="pointer-events-none absolute left-md top-md font-display text-[3rem] font-light italic leading-none"
-          style={{ color: 'rgba(255, 255, 255, 0.3)' }}
+          className="pointer-events-none absolute left-md top-md font-display text-[3rem] font-light italic leading-none drop-shadow-sm"
+          style={{ color: 'rgba(255, 255, 255, 0.35)' }}
           aria-hidden="true"
         >
           {roomNumber}
@@ -98,7 +106,7 @@ export default function RoomCard({ roomKey, imageSrc, roomNumber }: RoomCardProp
       </div>
 
       {/* Content area — 40% */}
-      <div className="flex flex-1 flex-col border-l-[3px] border-l-transparent px-[2rem] py-[1.5rem] transition-colors duration-300 group-hover:border-l-gold">
+      <div className="flex flex-1 flex-col border-l-[3px] border-l-transparent px-[2rem] py-[1.5rem] transition-colors duration-300 group-hover:border-l-sea-teal">
         <h3 className="font-body text-[1.1rem] font-bold uppercase tracking-[0.08em] text-charcoal">
           {t(`items.${roomKey}.name`)}
         </h3>
@@ -121,19 +129,19 @@ export default function RoomCard({ roomKey, imageSrc, roomNumber }: RoomCardProp
         </ul>
 
         <div className="mt-auto flex items-end justify-between pt-md">
-          <p className="font-display text-[1.5rem] font-light italic text-gold">
+          <p className="font-display text-[1.5rem] font-light italic text-sea-teal">
             {t(`items.${roomKey}.priceFrom`)}
           </p>
 
-          <a
-            href="#booking"
-            className="group/details flex items-center gap-xs font-body text-[0.85rem] font-medium text-charcoal transition-colors hover:text-gold"
+          <button
+            onClick={(e) => { e.stopPropagation(); onSelect?.(roomKey); }}
+            className="group/details flex items-center gap-xs font-body text-[0.85rem] font-medium text-charcoal transition-colors hover:text-sea-teal"
           >
             {t('details')}
-            <span className="flex h-8 w-8 items-center justify-center rounded-[2px] bg-gold text-white transition-transform duration-300 group-hover/details:translate-x-1 group-hover/details:bg-gold/90">
+            <span className="flex h-8 w-8 items-center justify-center rounded-[2px] bg-sea-teal text-white transition-transform duration-300 group-hover/details:translate-x-1 group-hover/details:bg-sea-teal/90">
               <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </span>
-          </a>
+          </button>
         </div>
       </div>
     </article>

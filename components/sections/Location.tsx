@@ -1,32 +1,23 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Car, MapPin, MessageCircle, Phone, Send } from 'lucide-react';
-import DistanceCard from '@/components/ui/DistanceCard';
-import LocationMap from '@/components/ui/LocationMap';
+import dynamic from 'next/dynamic';
 import { loadGsap, loadScrollTrigger } from '@/lib/gsap-client';
 
-const DEST_KEYS = [
-  'airport',
-  'station',
-  'beach',
-  'rosa',
-  'olympic',
-  'shops',
-] as const;
+// Dynamic import to avoid SSR issues with Leaflet
+const InteractiveMap = dynamic(() => import('@/components/ui/LocationMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="relative mx-auto w-full max-w-5xl h-[520px] rounded-3xl bg-warm-stone/60 flex items-center justify-center">
+      <div className="text-warm-gray-light text-sm tracking-widest uppercase">Загрузка карты…</div>
+    </div>
+  ),
+});
 
-const FAN_POSITIONS: Record<
-  (typeof DEST_KEYS)[number],
-  string
-> = {
-  airport: 'lg:absolute lg:left-0 lg:top-[2%] lg:max-w-[220px]',
-  station: 'lg:absolute lg:left-0 lg:top-[38%] lg:max-w-[220px]',
-  shops: 'lg:absolute lg:bottom-[8%] lg:left-[4%] lg:max-w-[220px]',
-  beach: 'lg:absolute lg:bottom-0 lg:left-[28%] lg:max-w-[220px]',
-  olympic: 'lg:absolute lg:bottom-[8%] lg:right-[4%] lg:max-w-[220px]',
-  rosa: 'lg:absolute lg:right-0 lg:top-[2%] lg:max-w-[220px]',
-};
+const DEST_KEYS = ['airport', 'station', 'beach', 'rosa'] as const;
 
 const YANDEX_MAPS =
   'https://yandex.ru/maps?ll=39.969182,43.464403&mode=routes&rtext=~43.464403,39.969182&z=17';
@@ -37,6 +28,15 @@ const VK = 'https://vk.com/sochiwhitehouse';
 export default function Location() {
   const t = useTranslations('location');
   const sectionRef = useRef<HTMLElement>(null);
+  const [selected, setSelected] = useState<string | undefined>();
+
+  // Framer spring cards data (focused on key highlights + free transfers emphasized)
+  const highlights = [
+    { key: 'airport', time: '7', unit: t('unit'), label: t('destinations.airport.label'), desc: 'Международный аэропорт Сочи', free: true },
+    { key: 'station', time: '12', unit: t('unit'), label: t('destinations.station.label'), desc: 'Железнодорожный вокзал Адлер', free: true },
+    { key: 'beach', time: '10', unit: t('unit'), label: t('destinations.beach.label'), desc: 'Пляжи и инфраструктура Сириуса', free: true },
+    { key: 'rosa', time: '30', unit: t('unit'), label: t('destinations.rosa.label'), desc: 'Горнолыжные курорты Красной Поляны', free: false },
+  ];
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -53,11 +53,6 @@ export default function Location() {
       ).matches;
 
       if (prefersReducedMotion) {
-        gsap.set(section.querySelectorAll('[data-distance-card]'), {
-          opacity: 1,
-          x: 0,
-          y: 0,
-        });
         gsap.set('[data-location-map]', { opacity: 1, scale: 1 });
         gsap.set('[data-transfer-banner]', { opacity: 1, y: 0 });
         return;
@@ -66,7 +61,7 @@ export default function Location() {
       const ctx = gsap.context(() => {
         gsap.fromTo(
           '[data-location-map]',
-          { opacity: 0, scale: 0.95 },
+          { opacity: 0, scale: 0.96 },
           {
             opacity: 1,
             scale: 1,
@@ -74,44 +69,23 @@ export default function Location() {
             ease: 'power2.out',
             scrollTrigger: {
               trigger: '[data-location-map-area]',
-              start: 'top 75%',
+              start: 'top 72%',
               toggleActions: 'play none none none',
             },
           }
         );
 
-        const cards = section.querySelectorAll('[data-distance-card]');
-        cards.forEach((card, index) => {
-          const fromRight = index % 2 === 1;
-          gsap.fromTo(
-            card,
-            { opacity: 0, x: fromRight ? 40 : -40 },
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.7,
-              delay: index * 0.1,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: '[data-distance-area]',
-                start: 'top 75%',
-                toggleActions: 'play none none none',
-              },
-            }
-          );
-        });
-
         gsap.fromTo(
           '[data-transfer-banner]',
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.75,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: '[data-transfer-banner]',
-              start: 'top 85%',
+              start: 'top 82%',
               toggleActions: 'play none none none',
             },
           }
@@ -124,6 +98,24 @@ export default function Location() {
     return () => cleanup?.();
   }, []);
 
+  const handleCardClick = (key: string) => {
+    setSelected(key);
+    // Scroll map into view smoothly
+    const mapArea = document.querySelector('[data-location-map-area]');
+    if (mapArea) {
+      mapArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 28 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring', stiffness: 120, damping: 22, delay: i * 0.04 },
+    }),
+  };
+
   return (
     <section
       id="location"
@@ -131,140 +123,122 @@ export default function Location() {
       className="location-gradient section-padding"
     >
       <div className="container-content">
-        {/* Header */}
-        <div className="text-center">
-          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
+        {/* Elegant headline */}
+        <div className="text-center max-w-2xl mx-auto">
+          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-sea-teal">
             {t('eyebrow')}
           </p>
-          <h2 className="mt-sm font-display text-h1 italic leading-[1.1] text-deep-navy">
+          <h2 className="mt-2 font-display text-h1 italic leading-[0.96] text-charcoal">
             {t('heading')}
           </h2>
-          <p className="mx-auto mt-sm max-w-xl font-display text-h3 font-light italic text-gold">
+          <p className="mt-2 text-lg md:text-xl font-light italic text-warm-gray-light tracking-tight">
             {t('subheading')}
           </p>
         </div>
 
-        {/* Map + distance fan */}
-        <div
-          data-location-map-area
-          data-distance-area
-          className="relative mx-auto mt-xl max-w-6xl"
-        >
-          {/* Desktop fan layout */}
-          <div className="relative hidden min-h-[620px] lg:block">
-            <div className="absolute left-1/2 top-1/2 w-full max-w-2xl -translate-x-1/2 -translate-y-1/2">
-              <LocationMap />
-            </div>
-
-            {DEST_KEYS.map((key) => (
-              <DistanceCard
-                key={key}
-                destKey={key}
-                time={t(`destinations.${key}.time`)}
-                unit={t('unit')}
-                label={t(`destinations.${key}.label`)}
-                className={FAN_POSITIONS[key]}
-              />
-            ))}
+        {/* Interactive Map */}
+        <div data-location-map-area className="relative mx-auto mt-10 max-w-5xl">
+          <div data-location-map>
+            <InteractiveMap 
+              selected={selected} 
+              onMarkerClick={(key) => setSelected(key)} 
+            />
           </div>
-
-          {/* Mobile / tablet grid */}
-          <div className="lg:hidden">
-            <LocationMap />
-            <div className="mt-md grid grid-cols-2 gap-sm">
-              {DEST_KEYS.map((key) => (
-                <DistanceCard
-                  key={key}
-                  destKey={key}
-                  time={t(`destinations.${key}.time`)}
-                  unit={t('unit')}
-                  label={t(`destinations.${key}.label`)}
-                />
-              ))}
-            </div>
-          </div>
+          <p className="mt-3 text-center text-xs tracking-[0.5px] uppercase text-warm-gray-light">
+            Нажмите на маркер или карточку — карта переместится к локации
+          </p>
         </div>
 
-        {/* Transfer banner */}
+        {/* Beautiful animated highlight cards */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          {highlights.map((h, index) => (
+            <motion.button
+              key={h.key}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+              onClick={() => handleCardClick(h.key)}
+              className={`group text-left p-6 rounded-2xl border transition-all duration-200 flex flex-col bg-white hover:shadow-[0_20px_50px_-12px_rgb(0,0,0,0.1)] focus:outline-none focus:ring-1 focus:ring-sea-teal ${
+                selected === h.key 
+                  ? 'border-sea-teal ring-1 ring-sea-teal shadow-md' 
+                  : 'border-warm-gray/10'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="font-display text-[2.35rem] font-light italic leading-none text-sea-teal tracking-tighter">
+                    {h.time}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-[1.5px] text-warm-gray-light mt-0.5">{h.unit}</div>
+                </div>
+                <div className="text-sea-teal/70 group-hover:text-sea-teal transition-colors">
+                  <MapPin className="h-5 w-5" />
+                </div>
+              </div>
+
+              <div className="mt-4 font-medium text-charcoal tracking-tight text-[15px]">{h.label}</div>
+              <div className="mt-1 text-sm text-warm-gray-light leading-snug">{h.desc}</div>
+
+              {h.free && (
+                <div className="mt-auto pt-4 text-[10px] font-semibold tracking-[0.8px] uppercase text-sea-teal inline-flex items-center gap-1">
+                  БЕСПЛАТНЫЙ ТРАНСФЕР
+                </div>
+              )}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Prominent free transfers banner */}
         <div
           data-transfer-banner
-          className="mt-xl flex flex-col items-center gap-md bg-deep-navy p-lg opacity-0 md:flex-row md:justify-between md:gap-lg md:p-[3rem]"
+          className="mt-10 flex flex-col items-center gap-5 bg-charcoal text-white p-8 md:p-10 rounded-3xl md:flex-row md:items-center md:justify-between max-w-5xl mx-auto"
         >
-          <Car
-            className="h-12 w-12 shrink-0 text-gold"
-            strokeWidth={1.5}
-          />
-
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="font-body text-h3 font-semibold text-white">
-              {t('transfer.heading')}
-            </h3>
-            <p
-              className="mt-xs font-body text-body leading-relaxed"
-              style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-            >
-              {t('transfer.body')}
-            </p>
+          <div className="flex items-center gap-5">
+            <Car className="h-10 w-10 shrink-0 text-sea-teal-light" strokeWidth={1.6} />
+            <div>
+              <div className="font-semibold tracking-tight text-xl md:text-2xl">{t('transfer.heading')}</div>
+              <p className="mt-1 text-white/75 max-w-md text-[15px] leading-relaxed">{t('transfer.body')}</p>
+            </div>
           </div>
 
           <a
             href="#booking"
             data-analytics="book"
-            className="shrink-0 rounded-[2px] border border-gold px-lg py-sm font-body text-[0.85rem] font-semibold uppercase tracking-[0.1em] text-gold transition-colors hover:bg-gold hover:text-charcoal"
+            className="shrink-0 mt-2 md:mt-0 inline-flex items-center justify-center rounded-3xl border border-white/40 px-7 py-3 text-sm font-medium uppercase tracking-widest transition hover:bg-white hover:text-charcoal active:scale-[0.985]"
           >
             {t('transfer.cta')}
           </a>
         </div>
 
-        {/* Address + contact bar */}
-        <div className="mt-lg flex flex-col items-center justify-between gap-md border-t border-charcoal/10 py-md md:flex-row">
-          <div className="flex flex-col items-center gap-xs md:items-start">
+        {/* Address + contacts */}
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-charcoal/10 py-5 text-sm md:flex-row max-w-5xl mx-auto">
+          <div className="flex flex-col items-center gap-1.5 md:items-start text-charcoal/80">
             <a
               href={YANDEX_MAPS}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-xs font-body text-[0.85rem] text-charcoal transition-colors hover:text-gold"
+              className="inline-flex items-center gap-1.5 hover:text-sea-teal transition-colors"
             >
-              <MapPin className="h-4 w-4 text-gold" />
-              {t('address')}
+              <MapPin className="h-4 w-4" /> {t('address')}
             </a>
             <a
               href={`tel:${t('phone').replace(/\s/g, '')}`}
-              data-analytics="phone"
-              className="inline-flex items-center gap-xs font-body text-[0.85rem] text-charcoal transition-colors hover:text-gold"
+              className="inline-flex items-center gap-1.5 hover:text-sea-teal transition-colors"
             >
-              <Phone className="h-4 w-4 text-gold" />
-              {t('phone')}
+              <Phone className="h-4 w-4" /> {t('phone')}
             </a>
           </div>
 
-          <div className="flex items-center gap-md">
-            <a
-              href={TELEGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gold transition-opacity hover:opacity-70"
-              aria-label={t('social.telegram')}
-            >
-              <Send className="h-5 w-5" />
+          <div className="flex items-center gap-5 text-sea-teal">
+            <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" aria-label={t('social.telegram')} className="hover:text-sea-teal-light transition">
+              <Send className="h-4 w-4" />
             </a>
-            <a
-              href={WHATSAPP}
-              data-analytics="whatsapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gold transition-opacity hover:opacity-70"
-              aria-label={t('social.whatsapp')}
-            >
-              <MessageCircle className="h-5 w-5" />
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label={t('social.whatsapp')} className="hover:text-sea-teal-light transition">
+              <MessageCircle className="h-4 w-4" />
             </a>
-            <a
-              href={VK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-body text-[0.75rem] font-medium text-gold transition-opacity hover:opacity-70"
-              aria-label={t('social.vk')}
-            >
+            <a href={VK} target="_blank" rel="noopener noreferrer" className="text-xs font-medium tracking-wider hover:text-sea-teal-light transition">
               VK
             </a>
           </div>

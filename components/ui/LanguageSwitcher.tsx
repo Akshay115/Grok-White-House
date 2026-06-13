@@ -12,18 +12,18 @@ type LanguageSwitcherProps = {
 const VARIANT_STYLES = {
   nav: {
     container: 'text-[0.85rem] tracking-[0.12em]',
-    inactive: 'text-white/50 hover:text-white/80',
-    separator: 'text-white/30',
+    inactive: 'text-warm-gray-light hover:text-charcoal/70',
+    separator: 'text-warm-gray/40',
   },
   footer: {
     container: 'text-[0.85rem] tracking-[0.12em]',
-    inactive: 'text-white/40 hover:text-white/70',
-    separator: 'text-white/30',
+    inactive: 'text-warm-gray-light hover:text-charcoal/70',
+    separator: 'text-warm-gray/40',
   },
   mobile: {
     container: 'text-[1rem] tracking-[0.15em]',
-    inactive: 'text-white/50 hover:text-white',
-    separator: 'text-white/40',
+    inactive: 'text-warm-gray-light hover:text-charcoal',
+    separator: 'text-warm-gray/50',
   },
 } as const;
 
@@ -58,7 +58,7 @@ export default function LanguageSwitcher({
         onClick={() => switchLocale('ru')}
         disabled={isPending}
         className={`transition-colors duration-300 ${
-          locale === 'ru' ? 'text-gold' : styles.inactive
+          locale === 'ru' ? 'text-sea-teal' : styles.inactive
         }`}
         aria-label={t('switchToRu')}
         aria-current={locale === 'ru' ? 'true' : undefined}
@@ -73,7 +73,7 @@ export default function LanguageSwitcher({
         onClick={() => switchLocale('en')}
         disabled={isPending}
         className={`transition-colors duration-300 ${
-          locale === 'en' ? 'text-gold' : styles.inactive
+          locale === 'en' ? 'text-sea-teal' : styles.inactive
         }`}
         aria-label={t('switchToEn')}
         aria-current={locale === 'en' ? 'true' : undefined}

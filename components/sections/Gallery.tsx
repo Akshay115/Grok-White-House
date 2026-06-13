@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import GalleryLightbox, { type LightboxSlide } from '@/components/ui/GalleryLightbox';
 import GalleryTile from '@/components/ui/GalleryTile';
 import {
@@ -42,6 +43,7 @@ export default function Gallery() {
   const t = useTranslations('gallery');
   const [activeTab, setActiveTab] = useState<GalleryTab>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<GalleryItemKey | null>(null);
 
   const filteredItems = useMemo(() => {
     if (activeTab === 'all') return GALLERY_ITEMS;
@@ -68,6 +70,10 @@ export default function Gallery() {
     if (index >= 0) setLightboxIndex(index);
   };
 
+  const openVideo = (key: GalleryItemKey) => {
+    setSelectedVideo(key);
+  };
+
   const handleTabChange = (tab: GalleryTab) => {
     setActiveTab(tab);
     setLightboxIndex(null);
@@ -78,10 +84,10 @@ export default function Gallery() {
       <div className="container-content">
         {/* Header */}
         <div className="text-center">
-          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
+          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.42em] text-sea-teal">
             {t('eyebrow')}
           </p>
-          <h2 className="mt-sm font-display text-h1 italic leading-[1.1] text-deep-navy">
+          <h2 className="mt-sm font-display text-h1 italic leading-[0.96] text-charcoal">
             {t('heading')}
           </h2>
         </div>
@@ -103,15 +109,15 @@ export default function Gallery() {
                 onClick={() => handleTabChange(tab)}
                 className={`relative pb-xs font-body text-[0.85rem] font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
                   isActive
-                    ? 'text-gold'
-                    : 'text-charcoal/40 hover:text-charcoal'
+                    ? 'text-sea-teal'
+                    : 'text-charcoal/50 hover:text-charcoal'
                 }`}
               >
                 {t(`tabs.${tab}`)}
                 {isActive && (
                   <motion.span
                     layoutId="gallery-tab-underline"
-                    className="absolute inset-x-0 bottom-0 h-0.5 bg-gold"
+                    className="absolute inset-x-0 bottom-0 h-0.5 bg-sea-teal"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -135,7 +141,13 @@ export default function Gallery() {
                 <GalleryTile
                   item={item}
                   alt={t(`items.${item.key}.alt`)}
-                  onClick={() => openLightbox(item.key)}
+                  onClick={() => {
+                    if ((item as any).isVideo) {
+                      openVideo(item.key);
+                    } else {
+                      openLightbox(item.key);
+                    }
+                  }}
                 />
               </motion.div>
             ))}
@@ -150,11 +162,11 @@ export default function Gallery() {
             rel="noopener noreferrer"
             className="group inline-flex flex-col items-center gap-xs transition-transform duration-300 hover:scale-[1.02]"
           >
-            <InstagramIcon className="h-7 w-7 text-gold" />
-            <span className="font-body text-body text-charcoal underline decoration-gold decoration-2 underline-offset-4 transition-all group-hover:no-underline">
+            <InstagramIcon className="h-7 w-7 text-sea-teal" />
+            <span className="font-body text-body text-charcoal underline decoration-sea-teal decoration-2 underline-offset-4 transition-all group-hover:no-underline">
               {t('instagram.text')}
             </span>
-            <span className="font-body text-[0.85rem] font-medium text-gold">
+            <span className="font-body text-[0.85rem] font-medium text-sea-teal">
               {t('instagram.handle')}
             </span>
           </a>
@@ -167,6 +179,52 @@ export default function Gallery() {
         onClose={() => setLightboxIndex(null)}
         onNavigate={setLightboxIndex}
       />
+
+      {/* Elegant full-screen cinematic video player for drone / pool reflections */}
+      <AnimatePresence>
+        {selectedVideo && (() => {
+          const videoItem = filteredItems.find((i: any) => i.key === selectedVideo) || GALLERY_ITEMS.find((i: any) => i.key === selectedVideo);
+          if (!videoItem || !videoItem.isVideo) return null;
+          const caption = t(`items.${videoItem.key}.caption`);
+          return (
+            <motion.div
+              className="fixed inset-0 z-[110] flex items-center justify-center bg-charcoal/95 backdrop-blur-xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedVideo(null)}
+            >
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute right-6 top-6 z-20 text-white/70 hover:text-white transition"
+                aria-label={t('lightbox.close')}
+              >
+                <X className="h-8 w-8" />
+              </button>
+
+              <div className="relative w-full max-w-6xl px-4" onClick={(e) => e.stopPropagation()}>
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-2xl bg-black">
+                  <video
+                    key={videoItem.key}
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    poster={videoItem.src}
+                    className="h-full w-full object-cover"
+                  >
+                    <source src={videoItem.videoSrc} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <p className="mt-4 text-center text-white/60 text-sm tracking-wide">
+                  {caption} — White House Sochi
+                </p>
+              </div>
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
     </section>
   );
 }

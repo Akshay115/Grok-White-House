@@ -8,63 +8,55 @@
     "ogImage": "/og-image-en.jpg"
   },
   "nav": {
-    "rooms": "Rooms",
+    "about": "About",
+    "rooms": "Accommodations",
     "amenities": "Amenities",
-    "location": "Location",
     "gallery": "Gallery",
+    "location": "Location",
     "reviews": "Reviews",
+    "contacts": "Contact",
     "book": "Book Now",
     "booking": "Booking",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "logo": "WHITE HOUSE",
-    "logoSubtitle": "SOCHI · ADLER",
+    "logoSubtitle": "БЕЛЫЙ ДОМ",
     "ariaLabel": "Main navigation"
   },
   "hero": {
     "eyebrow": "ADLER · SOCHI · RUSSIA",
-    "headline": "White House",
-    "subheadline": "Premium Boutique Guest House",
-    "body": "Designer rooms, heated pools, and heartfelt service just 7 minutes from Adler Airport.",
+    "headline": "Белый Дом Сочи",
+    "subtitle": "White House Sochi",
+    "tagline": "Your oasis of modern comfort between the sea and the mountains",
     "ctaPrimary": "Book Now",
-    "ctaSecondary": "View Rooms",
+    "ctaSecondary": "Learn More",
     "scrollHint": "SCROLL",
     "aboutAria": "Go to the about section",
-    "imageAlt": "White House guest house in Adler — white building, pools and greenery",
+    "imageAlt": "White House Sochi — modern white villa with pool against the Caucasus mountains and Black Sea at golden hour, architectural photography",
     "stats": {
       "rating": { "value": "4.9 ★", "label": "Yandex Maps Rating" },
       "reviews": { "value": "19", "label": "Reviews" },
       "airport": { "value": "7 min", "label": "To Airport" },
-      "pools": { "value": "2", "label": "Heated Pools" }
+      "pools": { "value": "2", "label": "Private Pools" }
     }
   },
   "about": {
-    "eyebrow": "ABOUT US",
-    "heading": "Where Architecture Meets Hospitality",
+    "eyebrow": "THE HOUSE",
+    "heading": "White House Sochi",
     "paragraphs": {
-      "p1": "White House is a newly built guest house with designer renovation, where a crisp white aesthetic meets modern interiors. Crystal cleanliness, thoughtful details, and a sense of warmth create a truly premium atmosphere.",
-      "p2": "The property sits at a road junction between Krasnaya Polyana mountain resorts and the Sirius Federal Territory. Adler Airport is 7 minutes away, Rosa Khutor 30 minutes, and Sirius beaches 10 minutes by car.",
-      "p3": "Hosts Irina and Vladimir welcome every guest like close friends: personal attention, delicious breakfasts, and help with routes and excursions. Here, hospitality is not a service — it is a way of life."
-    },
-    "quote": {
-      "text": "We've come back here as a family for the third time!",
-      "attribution": "Nina Shtaros, guest"
-    },
-    "facts": {
-      "airport": { "value": "7 min", "label": "To Airport" },
-      "rosa": { "value": "30 min", "label": "To Rosa Khutor" },
-      "beach": { "value": "10 min", "label": "To Beach" }
+      "p1": "White House Sochi is a newly realized designer guest house, born from the desire to create a place where contemporary comfort meets serene elegance. Pure white volumes and flowing lines form spaces filled with light and air.",
+      "p2": "The philosophy of the house lies in natural harmony. There are no intrusive details — only thoughtful proportions, tactile materials, and a profound sense of calm. Every corner is designed so that guests can fully relax and feel connected to the surrounding world.",
+      "p3": "Located at the crossroads between Sirius and Krasnaya Polyana — just minutes from the airport and beaches, and half an hour from the mountain peaks. Terraces and windows frame sweeping views of the sea and the Caucasus, while the light architectural lines gently dissolve into the subtropical garden and landscape."
     },
     "images": {
-      "main": "White House guest house exterior",
-      "secondary1": "Heated pool on the property",
-      "secondary2": "Designer room interior"
+      "main": "White House facade with views of the mountains and sea",
+      "secondary": "Luminous interior dissolving into nature"
     }
   },
   "rooms": {
     "eyebrow": "ROOMS & SUITES",
-    "heading": "Your Home on the Black Sea",
-    "subheading": "Every room is its own story of comfort",
+    "heading": "Spaces of Light & Form",
+    "subheading": "Four distinct residences with flowing terraces and sea views",
     "details": "Details",
     "metaSeparator": "·",
     "banner": {
@@ -73,69 +65,87 @@
     },
     "items": {
       "standard": {
-        "name": "Standard",
-        "area": "~20 m²",
+        "name": "Deluxe Terrace",
+        "area": "~22 m²",
         "capacity": "2 guests",
         "capacityShort": "2",
-        "priceFrom": "from ₽3,500 / night",
-        "features": ["Air Conditioning", "Wi-Fi", "Kitchenette", "Balcony"]
+        "priceFrom": "from ₽4,200 / night",
+        "features": ["Air Conditioning", "Wi-Fi", "Kitchenette", "Private Terrace", "Garden View"],
+        "description": "Elegant deluxe with its own terrace. Bright white interiors, comfortable lounge area and direct access to fresh air. Perfect for couples who value privacy and connection to nature."
       },
       "deluxe": {
-        "name": "Deluxe",
-        "area": "~28 m²",
+        "name": "Pool View Suite",
+        "area": "~30 m²",
         "capacity": "2–3 guests",
         "capacityShort": "2–3",
-        "priceFrom": "from ₽5,000 / night",
-        "features": ["Pool View", "Double Bed", "Air Conditioning", "Wi-Fi", "Balcony"]
+        "priceFrom": "from ₽6,800 / night",
+        "features": ["Panoramic Pool View", "King-size Bed", "Air Conditioning", "Wi-Fi", "Balcony", "Mini Bar"],
+        "description": "Spacious suite with full views of the crystal pools. Large windows and balcony create a sense of lightness. Premium finishes make this the ideal place for complete relaxation after a day by the sea or in the mountains."
       },
       "family": {
-        "name": "Family",
-        "area": "~36 m²",
+        "name": "Family Luxe",
+        "area": "~38 m²",
         "capacity": "4 guests",
         "capacityShort": "4",
-        "priceFrom": "from ₽6,500 / night",
-        "features": ["Two Bedrooms", "Full Kitchen", "Air Conditioning", "Wi-Fi", "Balcony"]
+        "priceFrom": "from ₽9,500 / night",
+        "features": ["Two Bedrooms", "Full Kitchen", "Air Conditioning", "Wi-Fi", "Large Balcony", "Lounge Area"],
+        "description": "The perfect family space with two separate bedrooms and a full kitchen. Light, calming interiors focused on comfort and privacy. Plenty of room for everyone to relax together."
       },
       "apartment": {
-        "name": "Apartment Suite",
-        "area": "~45 m²",
-        "capacity": "up to 5 guests",
-        "capacityShort": "5",
-        "priceFrom": "from ₽8,500 / night",
-        "features": ["Premium Finish", "Lounge", "Large Balcony", "Full Kitchen"]
+        "name": "Private Villa",
+        "area": "~55 m²",
+        "capacity": "up to 6 guests",
+        "capacityShort": "6",
+        "priceFrom": "from ₽14,000 / night",
+        "features": ["Separate Lounge", "Full Kitchen", "Panoramic Terrace", "Premium Finishes", "Two Bathrooms", "Private Entrance"],
+        "description": "Our flagship — an entire private residence. Separate living room, generous kitchen, spectacular terrace. The feeling of your own home with the highest level of seclusion and luxury. The ultimate choice for special moments."
       }
     }
   },
   "amenities": {
-    "eyebrow": "AMENITIES",
-    "heading": "Everything for Your Comfort",
-    "groups": {
-      "facilities": {
-        "label": "Facilities",
-        "items": {
-          "heatedPools": "Two Heated Pools",
-          "parking": "Free Parking",
-          "kitchen": "In-Room Kitchen",
-          "breakfast": "Breakfast Included"
-        }
+    "eyebrow": "AMENITIES & SERVICES",
+    "heading": "Spaces of Care and Comfort",
+    "intro": "Everything you need for an effortless stay in harmony with nature.",
+    "items": {
+      "heatedPools": {
+        "title": "Two Heated Pools",
+        "desc": "Crystal-clear water year-round. Perfect after the sea or mountain walks."
       },
-      "services": {
-        "label": "Services",
-        "items": {
-          "airportTransfer": "Airport Transfer",
-          "trainTransfer": "Train Station Transfer",
-          "beachTransfer": "Sirius Beach Transfer",
-          "excursions": "Regional Excursions"
-        }
+      "bbq": {
+        "title": "BBQ Area",
+        "desc": "Spacious terrace with grill and garden views. Evenings under the open sky."
       },
-      "rooms": {
-        "label": "In Every Room",
-        "items": {
-          "ac": "Air Conditioning",
-          "wifi": "Free Wi-Fi",
-          "laundry": "Laundry Service",
-          "housekeeping": "Daily Housekeeping"
-        }
+      "freeTransfer": {
+        "title": "Complimentary Transfers",
+        "desc": "From the airport, train station, and to Sirius beaches when booking 3+ nights."
+      },
+      "kitchen": {
+        "title": "Kitchen & Kitchenette",
+        "desc": "Full kitchen or convenient kitchenette for self-catering and independence."
+      },
+      "ac": {
+        "title": "Air Conditioning",
+        "desc": "Individual climate control in every room and apartment."
+      },
+      "wifi": {
+        "title": "High-Speed Wi-Fi",
+        "desc": "Reliable coverage throughout the property for work and leisure."
+      },
+      "dailyCleaning": {
+        "title": "Daily Housekeeping",
+        "desc": "Impeccable cleanliness and fresh towels every day."
+      },
+      "parking": {
+        "title": "Parking",
+        "desc": "Free secure parking on the grounds for your vehicle."
+      },
+      "excursions": {
+        "title": "Excursions & Adventures",
+        "desc": "Organized trips to Abkhazia, Krasnaya Polyana, Sochi and other highlights."
+      },
+      "breakfast": {
+        "title": "Signature Breakfasts",
+        "desc": "Delicious home-style breakfasts by Irina featuring local produce."
       }
     },
     "feature": {
@@ -151,8 +161,8 @@
     }
   },
   "location": {
-    "eyebrow": "LOCATION",
-    "heading": "At the Heart of Resort Sochi",
+    "eyebrow": "SIGNATURE LOCATION",
+    "heading": "Perfectly Poised Between Mountains and Sea",
     "subheading": "The perfect base for mountains and the sea",
     "address": "2/17 Ivanovskaya St., Sochi, Krasnodar Krai",
     "phone": "+7 (962) 157-44-97",
@@ -183,10 +193,11 @@
     "heading": "Feel the Atmosphere",
     "tabs": {
       "all": "All",
-      "rooms": "Rooms",
-      "pool": "Pool",
-      "grounds": "Grounds",
-      "breakfast": "Breakfast"
+      "exterior": "Exterior",
+      "interiors": "Interiors",
+      "pool-terrace": "Pool & Terrace",
+      "views": "Views",
+      "details": "Details"
     },
     "instagram": {
       "text": "More photos on our Instagram",
@@ -194,23 +205,27 @@
     },
     "lightbox": {
       "close": "Close",
-      "prev": "Previous photo",
-      "next": "Next photo"
+      "prev": "Previous",
+      "next": "Next"
     },
     "items": {
-      "room1": { "category": "rooms", "caption": "Designer Room", "alt": "White House room interior" },
-      "room2": { "category": "rooms", "caption": "Bedroom with Balcony", "alt": "Bedroom overlooking the grounds" },
-      "room3": { "category": "rooms", "caption": "Family Suite", "alt": "Spacious family room" },
-      "room4": { "category": "rooms", "caption": "Bathroom", "alt": "Modern bathroom" },
-      "pool1": { "category": "pool", "caption": "Heated Pool", "alt": "Pool with evening lighting" },
-      "pool2": { "category": "pool", "caption": "Poolside Lounge", "alt": "Loungers by the pool" },
-      "pool3": { "category": "pool", "caption": "Second Pool", "alt": "Second heated pool" },
-      "grounds1": { "category": "grounds", "caption": "Guest House Exterior", "alt": "White House facade" },
-      "grounds2": { "category": "grounds", "caption": "Gardens & Grounds", "alt": "Lush landscaped grounds" },
-      "grounds3": { "category": "grounds", "caption": "BBQ Area", "alt": "Outdoor barbecue area" },
-      "grounds4": { "category": "grounds", "caption": "Evening View", "alt": "Guest house at dusk" },
-      "breakfast1": { "category": "breakfast", "caption": "Breakfast by Irina", "alt": "Delicious breakfast spread" },
-      "breakfast2": { "category": "breakfast", "caption": "Dining Area", "alt": "Cozy breakfast nook" }
+      "ext1": { "category": "exterior", "caption": "White sculpture on the slope", "alt": "Parametric white villa facade against the mountains" },
+      "ext2": { "category": "exterior", "caption": "Aerial of the residence", "alt": "Aerial view of the white villa with pools and terraces" },
+      "ext3": { "category": "exterior", "caption": "Curves and light", "alt": "Modern white exterior with organic forms" },
+      "int1": { "category": "interiors", "caption": "Light and space", "alt": "Bright interior dissolving into nature" },
+      "int2": { "category": "interiors", "caption": "Minimal warmth", "alt": "Contemporary white villa interior" },
+      "int3": { "category": "interiors", "caption": "Panoramic windows", "alt": "Interior with large windows and abundant light" },
+      "int4": { "category": "interiors", "caption": "Calm geometry", "alt": "Architectural interior detail with soft light" },
+      "pool1": { "category": "pool-terrace", "caption": "Pool at golden hour", "alt": "Heated pool with mountain backdrop" },
+      "pool2": { "category": "pool-terrace", "caption": "Terrace by the water", "alt": "Poolside lounge area" },
+      "terrace1": { "category": "pool-terrace", "caption": "Flowing terraces", "alt": "Terrace with sweeping views" },
+      "view1": { "category": "views", "caption": "Between sea and mountains", "alt": "Vista from the villa to the Black Sea and Caucasus" },
+      "view2": { "category": "views", "caption": "Endless horizon", "alt": "Sea view from the terrace" },
+      "view3": { "category": "views", "caption": "Mountain peaks at dusk", "alt": "Panoramic mountain vista" },
+      "detail1": { "category": "details", "caption": "Play of light on white", "alt": "Architectural detail of white surfaces" },
+      "detail2": { "category": "details", "caption": "Organic curve", "alt": "Parametric architecture close-up" },
+      "video-drone": { "category": "video", "caption": "Flight over the residence", "alt": "Cinematic drone over the white villa" },
+      "video-pool": { "category": "video", "caption": "Reflections and silence", "alt": "Cinematic pool and terrace reflections" }
     }
   },
   "reviews": {
@@ -300,7 +315,7 @@
   "footer": {
     "logo": "WHITE HOUSE",
     "locationTag": "SOCHI · ADLER · RUSSIA",
-    "description": "Designer-renovated guest house in Adler. Comfort, cleanliness, and warm hospitality by the Black Sea.",
+    "description": "Parametric villa by the Black Sea. Light, space and nature in perfect harmony.",
     "navHeading": "NAVIGATION",
     "contactsHeading": "CONTACTS",
     "factsHeading": "WHITE HOUSE",
@@ -327,8 +342,8 @@
     }
   },
   "language": {
-    "ru": "RU",
-    "en": "EN",
+    "ru": "РУС",
+    "en": "ENG",
     "separator": "|",
     "ariaLabel": "Language selection",
     "switchToRu": "Switch to Russian",
@@ -338,5 +353,46 @@
     "open": "Open",
     "closed": "Closed",
     "loading": "Loading..."
+  },
+  "discover": {
+    "eyebrow": "DISCOVER THE REGION",
+    "heading": "Discover the Region",
+    "subheading": "The best experiences just minutes from White House",
+    "experiences": {
+      "sirius-beaches": {
+        "title": "Sirius Beaches",
+        "desc": "Crystal-clear Black Sea waters, pristine beaches and promenades. Perfect for swimming and seaside strolls.",
+        "duration": "10 min",
+        "image": "/images/hero-villa.jpg"
+      },
+      "krasnaya-polyana": {
+        "title": "Krasnaya Polyana",
+        "desc": "Majestic Caucasus mountains and world-class resorts. Hiking in summer, skiing and snowboarding in winter.",
+        "duration": "30 min",
+        "image": "/images/aerial-villa.jpg"
+      },
+      "olympic-park": {
+        "title": "Olympic Park",
+        "desc": "Iconic 2014 Olympic venues, fountains, parks and history. A great spot for photos and leisurely walks.",
+        "duration": "10 min",
+        "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80"
+      },
+      "abkhazia": {
+        "title": "Abkhazia Excursions",
+        "desc": "Ancient caves, waterfalls, hot springs and fortresses. Fully organized day trips to this magical region.",
+        "duration": "1–2 hrs · Full day",
+        "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80"
+      }
+    },
+    "cta": "Learn More",
+    "closing": "Every destination tells a new story. We are happy to help plan the perfect day for you.",
+    "inquire": "Book an Excursion",
+    "viewMap": "View all on the map"
+  },
+  "virtualTour": {
+    "eyebrow": "EXPERIENCE THE VILLA",
+    "heading": "Virtual 360° Tour & 3D Preview",
+    "desc": "Walk through the terraces, pools, and luminous interiors from anywhere.",
+    "cta": "Start Virtual Tour"
   }
 }

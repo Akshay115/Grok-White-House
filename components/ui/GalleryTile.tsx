@@ -108,12 +108,19 @@ export default function GalleryTile({ item, alt, onClick }: GalleryTileProps) {
               : '(max-width: 768px) 100vw, 33vw'
           }
         />
-        <div
-          className="absolute inset-0 flex items-center justify-center bg-deep-navy/0 transition-colors duration-300 group-hover:bg-deep-navy/30"
-        >
+        {/* Refined hover: elegant zoom (already on image) + overlay with poetic caption / category */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+          <div className="text-white">
+            <div className="font-body text-[0.75rem] uppercase tracking-[2px] opacity-80 mb-0.5">
+              {alt.split(' ').slice(0, 3).join(' ')}
+            </div>
+            <div className="text-sm font-medium leading-tight drop-shadow">
+              {alt}
+            </div>
+          </div>
           <Expand
-            className="h-8 w-8 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            strokeWidth={1.5}
+            className="ml-auto h-6 w-6 text-white/80 group-hover:text-white transition-all duration-300"
+            strokeWidth={1.8}
           />
         </div>
       </div>

@@ -17,12 +17,13 @@ import LanguageSwitcher from './LanguageSwitcher';
 gsap.registerPlugin(ScrollTrigger);
 
 const NAV_ITEMS = [
+  'about',
+  'location',
   'rooms',
   'amenities',
-  'location',
   'gallery',
   'reviews',
-  'booking',
+  'contacts',
 ] as const;
 
 const SOCIAL_LINKS = {
@@ -80,7 +81,7 @@ function SocialIcon({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="footer-social-icon flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/60 transition-all duration-300 hover:scale-110 hover:border-gold hover:text-gold"
+      className="footer-social-icon flex h-9 w-9 items-center justify-center rounded-full border border-warm-gray/20 text-warm-gray-light transition-all duration-300 hover:scale-110 hover:border-sea-teal hover:text-sea-teal"
     >
       {type === 'vk' ? (
         <VkIcon className="h-4 w-4" />
@@ -97,7 +98,7 @@ function SocialIcon({
 
 function FooterHeading({ children }: { children: ReactNode }) {
   return (
-    <h3 className="font-body text-[0.7rem] font-medium uppercase tracking-[0.3em] text-gold">
+    <h3 className="font-body text-[0.7rem] font-medium uppercase tracking-[0.3em] text-sea-teal">
       {children}
     </h3>
   );
@@ -113,7 +114,7 @@ function FooterLink({
   return (
     <a
       href={href}
-      className="font-body text-[0.85rem] text-white/60 transition-colors duration-300 hover:text-white"
+      className="font-body text-[0.85rem] text-warm-gray-light transition-colors duration-300 hover:text-charcoal"
     >
       {children}
     </a>
@@ -194,44 +195,48 @@ export default function Footer() {
   ] as const;
 
   return (
-    <footer ref={footerRef} className="relative bg-charcoal text-white">
+    <footer ref={footerRef} className="relative bg-cream text-charcoal border-t border-warm-gray/10 parametric-bg">
       <HadidFlow
         variant="footer"
-        color="white"
-        opacity={0.08}
+        color="sea-teal"
+        opacity={0.06}
         animate
         className="top-0 z-[2] -translate-y-[55%]"
       />
 
       <div ref={contentRef} className="relative z-[1] opacity-0">
         <div className="container-content pt-20 pb-12">
-          <div className="grid gap-xl lg:grid-cols-[35%_20%_25%_20%] lg:gap-lg">
+          <div className="grid gap-xl lg:grid-cols-4 lg:gap-lg">
             {/* Brand */}
             <div>
-              <h2 className="font-display text-[2.5rem] font-light italic leading-none text-white">
+              <h2 className="font-display text-[2.5rem] font-light italic leading-none text-charcoal">
                 {t('logo')}
               </h2>
-              <p className="mt-sm font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
+              <p className="mt-sm font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-sea-teal">
                 {t('locationTag')}
               </p>
               <div
-                className="my-6 h-px w-[60px]"
-                style={{ backgroundColor: 'rgba(200, 169, 110, 0.3)' }}
+                className="my-6 h-px w-[60px] bg-warm-gray/20"
               />
-              <p className="max-w-[280px] font-body text-[0.85rem] leading-[1.7] text-white/50">
+              <p className="max-w-[280px] font-body text-[0.85rem] leading-[1.7] text-warm-gray-light">
                 {t('description')}
               </p>
               <div ref={socialRef} className="mt-lg flex gap-sm">
-                {(Object.keys(SOCIAL_LINKS) as Array<keyof typeof SOCIAL_LINKS>).map(
-                  (key) => (
+                <SocialIcon
+                  type="instagram"
+                  href={SOCIAL_LINKS.instagram.href}
+                  label={t(SOCIAL_LINKS.instagram.labelKey)}
+                />
+                {(Object.keys(SOCIAL_LINKS) as Array<keyof typeof SOCIAL_LINKS>)
+                  .filter((k) => k !== 'instagram')
+                  .map((key) => (
                     <SocialIcon
                       key={key}
                       type={key}
                       href={SOCIAL_LINKS[key].href}
                       label={t(SOCIAL_LINKS[key].labelKey)}
                     />
-                  )
-                )}
+                  ))}
               </div>
             </div>
 
@@ -255,9 +260,9 @@ export default function Footer() {
                   <a
                     href={PHONE_HREF}
                     data-analytics="phone"
-                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-white/60 transition-colors duration-300 hover:text-white"
+                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-warm-gray-light transition-colors duration-300 hover:text-charcoal"
                   >
-                    <Phone className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                    <Phone className="h-4 w-4 shrink-0 text-sea-teal" strokeWidth={1.5} />
                     {t('phone')}
                   </a>
                 </li>
@@ -267,9 +272,9 @@ export default function Footer() {
                     data-analytics="whatsapp"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-white/60 transition-colors duration-300 hover:text-white"
+                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-warm-gray-light transition-colors duration-300 hover:text-charcoal"
                   >
-                    <MessageCircle className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                    <MessageCircle className="h-4 w-4 shrink-0 text-sea-teal" strokeWidth={1.5} />
                     {t('whatsappLink')}
                   </a>
                 </li>
@@ -278,14 +283,14 @@ export default function Footer() {
                     href={TELEGRAM_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-white/60 transition-colors duration-300 hover:text-white"
+                    className="inline-flex items-center gap-xs font-body text-[0.85rem] text-warm-gray-light transition-colors duration-300 hover:text-charcoal"
                   >
-                    <Send className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+                    <Send className="h-4 w-4 shrink-0 text-sea-teal" strokeWidth={1.5} />
                     {t('telegramLink')}
                   </a>
                 </li>
                 <li className="pt-xs">
-                  <p className="font-body text-[0.85rem] leading-relaxed text-white/50">
+                  <p className="font-body text-[0.85rem] leading-relaxed text-warm-gray-light">
                     {t('addressLine1')}
                     <br />
                     {t('addressLine2')}
@@ -293,10 +298,10 @@ export default function Footer() {
                 </li>
                 <li className="flex items-center gap-xs pt-xs">
                   <span
-                    className="h-2 w-2 shrink-0 rounded-full bg-[#4ade80]"
+                    className="h-2 w-2 shrink-0 rounded-full bg-sea-teal"
                     aria-hidden="true"
                   />
-                  <span className="font-body text-[0.85rem] text-white/60">
+                  <span className="font-body text-[0.85rem] text-warm-gray-light">
                     {t('open24h')}
                   </span>
                 </li>
@@ -310,7 +315,7 @@ export default function Footer() {
                 {factKeys.map((key) => (
                   <li key={key} className="flex items-start gap-xs">
                     <Check
-                      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold"
+                      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-sea-teal"
                       strokeWidth={2.5}
                     />
                     {key === 'yandexRating' ? (
@@ -318,12 +323,12 @@ export default function Footer() {
                         href={YANDEX_MAPS}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-body text-[0.85rem] leading-relaxed text-white/50 transition-colors hover:text-white/70"
+                        className="font-body text-[0.85rem] leading-relaxed text-warm-gray-light transition-colors hover:text-charcoal"
                       >
                         {t(`facts.${key}`)}
                       </a>
                     ) : (
-                      <span className="font-body text-[0.85rem] leading-relaxed text-white/50">
+                      <span className="font-body text-[0.85rem] leading-relaxed text-warm-gray-light">
                         {t(`facts.${key}`)}
                       </span>
                     )}
@@ -335,16 +340,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div
-          className="border-t py-6"
-          style={{ borderColor: 'rgba(255, 255, 255, 0.06)' }}
-        >
+        <div className="border-t border-warm-gray/10 py-6">
           <div className="container-content flex flex-col items-center gap-md text-center md:flex-row md:justify-between md:gap-sm md:text-left">
-            <p className="font-body text-[0.85rem] text-white/40">
+            <p className="font-body text-[0.85rem] text-warm-gray-light">
               {t('rights', { year })}
             </p>
-            <LanguageSwitcher variant="footer" />
-            <p className="font-body text-[0.85rem] text-white/40 md:min-w-[200px] md:text-right">
+            <div className="flex items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-warm-gray-light">Language</span>
+              <LanguageSwitcher variant="footer" />
+            </div>
+            <p className="font-body text-[0.85rem] text-warm-gray-light md:min-w-[200px] md:text-right">
               {t('agency')}
             </p>
           </div>

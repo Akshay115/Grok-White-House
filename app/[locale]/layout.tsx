@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation';
 import YandexMetrika from '@/components/analytics/YandexMetrika';
 import StructuredData from '@/components/seo/StructuredData';
 import LocalePageTransition from '@/components/ui/LocalePageTransition';
+import SmoothScroll from '@/components/ui/SmoothScroll';
+import ScrollProgress from '@/components/ui/ScrollProgress';
 import { routing } from '@/i18n/routing';
 import { buildSiteMetadata, type MetadataMessages } from '@/lib/seo';
 import '@/styles/globals.css';
@@ -29,7 +31,7 @@ const inter = Inter({
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 export function generateStaticParams() {
@@ -37,8 +39,9 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: LocaleLayoutProps): Promise<Metadata> {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
   const resolvedLocale = locale as 'ru' | 'en';
 
@@ -56,8 +59,9 @@ export async function generateMetadata({
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: LocaleLayoutProps) {
+  const { locale } = await params;
   if (!routing.locales.includes(locale as 'ru' | 'en')) {
     notFound();
   }
@@ -79,6 +83,8 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <LocalePageTransition>{children}</LocalePageTransition>
+          <SmoothScroll />
+          <ScrollProgress />
         </NextIntlClientProvider>
         <YandexMetrika />
       </body>

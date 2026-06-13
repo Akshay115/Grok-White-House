@@ -157,8 +157,8 @@ export default function ReviewCarousel({
             onClick={() => scrollToDot(index)}
             className={`h-2 w-2 rounded-full transition-colors duration-300 ${
               activeDot === index
-                ? 'bg-gold'
-                : 'border border-white/30 bg-transparent'
+                ? 'bg-sea-teal'
+                : 'border border-charcoal/20 bg-transparent'
             }`}
             aria-label={`Review ${index + 1}`}
           />

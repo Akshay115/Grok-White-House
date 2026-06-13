@@ -2,16 +2,19 @@
 
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { MessageCircle } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const NAV_ITEMS = [
+  'about',
   'rooms',
   'amenities',
-  'location',
   'gallery',
+  'location',
   'reviews',
+  'contacts',
 ] as const;
 
 const SCROLL_THRESHOLD = 80;
@@ -64,9 +67,8 @@ export default function Navigation() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const mobileLinksRef = useRef<HTMLUListElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
-  const lineTopRef = useRef<HTMLSpanElement>(null);
-  const lineMidRef = useRef<HTMLSpanElement>(null);
-  const lineBotRef = useRef<HTMLSpanElement>(null);
+  const pathTopRef = useRef<SVGPathElement>(null);
+  const pathBotRef = useRef<SVGPathElement>(null);
   const lastScrollY = useRef(0);
   const hamburgerTl = useRef<gsap.core.Timeline | null>(null);
 
@@ -107,40 +109,45 @@ export default function Navigation() {
     }
   }, [isOpen]);
 
+  // Zaha-inspired curved hamburger → elegant close morph
   useEffect(() => {
-    const top = lineTopRef.current;
-    const mid = lineMidRef.current;
-    const bot = lineBotRef.current;
-    if (!top || !mid || !bot) return;
+    const topPath = pathTopRef.current;
+    const botPath = pathBotRef.current;
+    if (!topPath || !botPath) return;
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
 
+    // Elegant parametric-style curves (subtle organic arcs)
+    const menuTop = 'M3.5,6.5 Q8,5.8 20.5,6.5';
+    const menuBot = 'M3.5,17.5 Q8,18.2 20.5,17.5';
+
+    const closeTop = 'M6,6 Q12,12 18,18';
+    const closeBot = 'M6,18 Q12,12 18,6';
+
     if (prefersReducedMotion) {
       if (isOpen) {
-        gsap.set(top, { y: 7, rotation: 45 });
-        gsap.set(mid, { opacity: 0 });
-        gsap.set(bot, { y: -7, rotation: -45 });
+        gsap.set([topPath, botPath], { attr: { d: closeTop } });
+        gsap.set(botPath, { attr: { d: closeBot } });
       } else {
-        gsap.set(top, { y: 0, rotation: 0 });
-        gsap.set(mid, { opacity: 1 });
-        gsap.set(bot, { y: 0, rotation: 0 });
+        gsap.set(topPath, { attr: { d: menuTop } });
+        gsap.set(botPath, { attr: { d: menuBot } });
       }
       return;
     }
 
     hamburgerTl.current?.kill();
 
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ defaults: { duration: 0.42, ease: 'power3.inOut' } });
+
     if (isOpen) {
-      tl.to(top, { y: 7, rotation: 45, duration: 0.4, ease: 'power3.inOut' }, 0)
-        .to(mid, { opacity: 0, duration: 0.2, ease: 'power2.inOut' }, 0)
-        .to(bot, { y: -7, rotation: -45, duration: 0.4, ease: 'power3.inOut' }, 0);
+      // Morph the two curves into a refined crossed close
+      tl.to(topPath, { attr: { d: closeTop } }, 0)
+        .to(botPath, { attr: { d: closeBot } }, 0);
     } else {
-      tl.to(top, { y: 0, rotation: 0, duration: 0.4, ease: 'power3.inOut' }, 0)
-        .to(mid, { opacity: 1, duration: 0.2, ease: 'power2.inOut' }, 0.1)
-        .to(bot, { y: 0, rotation: 0, duration: 0.4, ease: 'power3.inOut' }, 0);
+      tl.to(topPath, { attr: { d: menuTop } }, 0)
+        .to(botPath, { attr: { d: menuBot } }, 0);
     }
 
     hamburgerTl.current = tl;
@@ -221,9 +228,46 @@ export default function Navigation() {
     gsap.set(linkEls, { opacity: 0, y: 40 });
   }, [isOpen]);
 
+  // Active section detection for fluid underline (parametric style)
+  const [activeSection, setActiveSection] = useState<string>('');
+
+  useEffect(() => {
+    // Map nav keys to actual section ids (contacts → booking)
+    const sectionIds = NAV_ITEMS.map((item) => (item === 'contacts' ? 'booking' : item));
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible) {
+          setActiveSection(visible.target.id);
+        }
+      },
+      {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: [0.2, 0.5, 0.8],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Fallback: set initial based on hash or first
+    const initial = window.location.hash.replace('#', '') || sectionIds[0];
+    if (sectionIds.includes(initial as any)) setActiveSection(initial);
+
+    return () => observer.disconnect();
+  }, []);
+
   const headerClasses = [
-    'nav-header fixed inset-x-0 top-0 z-50',
-    isScrolled || isOpen ? 'nav-header--glass' : 'bg-transparent',
+    'nav-header fixed inset-x-0 top-0 z-50 transition-all duration-300',
+    isScrolled || isOpen ? 'nav-header--glass nav-header--scrolled' : 'bg-transparent',
     isHidden && !isOpen ? 'nav-header--hidden' : 'translate-y-0',
   ].join(' ');
 
@@ -232,59 +276,147 @@ export default function Navigation() {
       <nav
         role="navigation"
         aria-label={t('ariaLabel')}
-        className="container-content relative flex items-center justify-between py-sm lg:py-md"
+        className={`container-content relative flex items-center justify-between transition-all duration-300 ${
+          isScrolled ? 'py-2 lg:py-3' : 'py-sm lg:py-md'
+        }`}
       >
-        {/* Logo */}
-        <a href="#" className="group shrink-0">
-          <span className="block font-display text-[1.1rem] font-light italic tracking-[0.25em] text-white transition-colors group-hover:text-gold-light lg:text-[1.25rem]">
-            {t('logo')}
+        {/* Refined bilingual logo / wordmark */}
+        <a href="#" className="group flex shrink-0 flex-col items-start -ml-1">
+          <span 
+            className={`font-display text-[1.05rem] font-light italic tracking-[0.22em] transition-colors duration-300 lg:text-[1.18rem] ${
+              isScrolled ? 'text-charcoal' : 'text-white'
+            } group-hover:text-sea-teal`}
+          >
+            White House
           </span>
-          <span className="mt-0.5 block font-body text-[0.6rem] font-normal tracking-[0.4em] text-gold">
-            {t('logoSubtitle')}
+          <span 
+            className={`-mt-1 flex items-center gap-1.5 font-body text-[0.52rem] font-normal tracking-[0.32em] transition-colors duration-300 ${
+              isScrolled ? 'text-warm-gray-light' : 'text-white/70'
+            }`}
+          >
+            БЕЛЫЙ ДОМ
           </span>
+          {/* Subtle parametric accent line under logo */}
+          <span className="mt-0.5 h-px w-6 bg-gradient-to-r from-sea-teal/40 to-transparent transition-all group-hover:w-8" />
         </a>
 
-        {/* Desktop center nav */}
+        {/* Desktop center nav — fluid parametric curve underlines */}
         <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-lg lg:flex">
-          {NAV_ITEMS.map((item) => (
-            <li key={item}>
-              <a href={`#${item}`} className="nav-link">
-                {t(item)}
-              </a>
-            </li>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const sectionId = item === 'contacts' ? 'booking' : item;
+            const isActive = activeSection === sectionId || (item === 'contacts' && activeSection === 'booking');
+            return (
+              <li key={item} className="relative">
+                <a
+                  href={`#${sectionId}`}
+                  onClick={(e) => {
+                    // smooth scroll with slight offset for fixed nav
+                    const el = document.getElementById(sectionId);
+                    if (el) {
+                      e.preventDefault();
+                      const y = el.getBoundingClientRect().top + window.scrollY - 90;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                  }}
+                  className={`group relative inline-flex items-center py-1 text-[0.82rem] font-normal uppercase tracking-[0.12em] transition-colors duration-300 ${
+                    isScrolled ? 'text-warm-gray hover:text-charcoal' : 'text-white/80 hover:text-white'
+                  } ${isActive ? (isScrolled ? 'text-sea-teal' : 'text-white') : ''}`}
+                >
+                  {t(item)}
+                  {/* Parametric curve underline — Zaha-inspired fluid bezier */}
+                  <span
+                    className={`parametric-nav-underline absolute -bottom-[1px] left-0 right-0 h-[3px] overflow-hidden transition-all duration-300 ${
+                      isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
+                  >
+                    <svg
+                      width="100%"
+                      height="3"
+                      viewBox="0 0 100 3"
+                      preserveAspectRatio="none"
+                      className="w-full"
+                    >
+                      <path
+                        d="M3,1.5 Q 25,0.2 50,1.5 Q 75,2.8 97,1.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.35"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="transition-[stroke-dashoffset] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                        style={{
+                          strokeDasharray: isActive ? '0' : '100',
+                          strokeDashoffset: isActive ? '0' : '100',
+                        }}
+                      />
+                    </svg>
+                  </span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* Desktop right: CTA + lang */}
+        {/* Desktop right: Elegant language toggle + prominent refined CTA */}
         <div className="hidden items-center gap-md lg:flex">
-          <a href="#booking" className="nav-cta" data-analytics="book">
-            {t('book')}
-          </a>
           <LanguageSwitcher />
+
+          {/* Refined prominent CTA with magnetic hover + subtle scale */}
+          <motion.a
+            href="#booking"
+            data-analytics="book"
+            whileHover={{ scale: 1.015 }}
+            whileTap={{ scale: 0.985 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+            className={`group relative inline-flex items-center justify-center overflow-hidden rounded-[2.25rem] border px-7 py-[0.6rem] font-body text-[0.78rem] font-medium uppercase tracking-[0.13em] transition-all duration-300 ${
+              isScrolled
+                ? 'border-sea-teal text-sea-teal hover:bg-sea-teal hover:text-white'
+                : 'border-white/70 text-white hover:border-white hover:bg-white hover:text-charcoal'
+            }`}
+          >
+            <span className="relative z-10">{t('book')}</span>
+            {/* Subtle magnetic / fluid highlight */}
+            <span 
+              className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-0" 
+              aria-hidden 
+            />
+          </motion.a>
         </div>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger — Zaha-inspired fluid curve morph */}
         <button
           ref={hamburgerRef}
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="relative z-[60] flex h-10 w-10 flex-col items-center justify-center gap-[6px] lg:hidden"
+          className={`relative z-[60] flex h-10 w-10 items-center justify-center lg:hidden transition-colors ${
+            isScrolled ? 'text-charcoal' : 'text-white'
+          }`}
           aria-label={isOpen ? t('closeMenu') : t('openMenu')}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
         >
-          <span
-            ref={lineTopRef}
-            className="block h-px w-6 origin-center bg-white"
-          />
-          <span
-            ref={lineMidRef}
-            className="block h-px w-6 origin-center bg-white"
-          />
-          <span
-            ref={lineBotRef}
-            className="block h-px w-6 origin-center bg-white"
-          />
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="overflow-visible"
+          >
+            {/* Top curve (menu) / upper diagonal (close) */}
+            <path
+              ref={pathTopRef}
+              d="M3.5,6.5 Q8,5.8 20.5,6.5"
+            />
+            {/* Bottom curve (menu) / lower diagonal (close) */}
+            <path
+              ref={pathBotRef}
+              d="M3.5,17.5 Q8,18.2 20.5,17.5"
+            />
+          </svg>
         </button>
       </nav>
 
@@ -292,7 +424,7 @@ export default function Navigation() {
       <div
         id="mobile-menu"
         ref={overlayRef}
-        className={`fixed inset-0 z-[55] flex flex-col bg-deep-navy transition-opacity duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
+        className={`fixed inset-0 z-[55] flex flex-col bg-pearl/95 backdrop-blur-3xl transition-opacity duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
           isOpen
             ? 'pointer-events-auto opacity-100'
             : 'pointer-events-none opacity-0'
@@ -303,18 +435,21 @@ export default function Navigation() {
 
         <div className="relative z-10 flex flex-1 flex-col justify-center px-sm">
           <ul ref={mobileLinksRef} className="flex flex-col gap-md">
-            {NAV_ITEMS.map((item) => (
-              <li key={item}>
-                <a
-                  href={`#${item}`}
-                  data-mobile-link
-                  onClick={closeMenu}
-                  className="nav-mobile-link"
-                >
-                  {t(item)}
-                </a>
-              </li>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const sectionId = item === 'contacts' ? 'booking' : item;
+              return (
+                <li key={item}>
+                  <a
+                    href={`#${sectionId}`}
+                    data-mobile-link
+                    onClick={closeMenu}
+                    className="nav-mobile-link"
+                  >
+                    {t(item)}
+                  </a>
+                </li>
+              );
+            })}
             <li>
               <a
                 href="#booking"

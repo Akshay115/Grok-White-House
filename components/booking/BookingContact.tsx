@@ -26,30 +26,16 @@ function ContactDecor() {
       <path
         d="M-20,120 C80,40 180,200 280,100 S380,20 420,140"
         fill="none"
-        stroke="white"
-        strokeWidth="1.5"
-        opacity="0.06"
+        stroke="#5BA3B8"
+        strokeWidth="1.2"
+        opacity="0.08"
       />
       <path
         d="M0,300 C120,220 220,380 340,280 S420,200 450,320"
         fill="none"
-        stroke="white"
-        strokeWidth="2"
+        stroke="#5BA3B8"
+        strokeWidth="1.5"
         opacity="0.06"
-      />
-      <path
-        d="M40,450 C160,350 260,500 360,400 S440,320 480,480"
-        fill="none"
-        stroke="white"
-        strokeWidth="1"
-        opacity="0.05"
-      />
-      <path
-        d="M200,0 C240,120 180,240 220,360 S260,480 200,600"
-        fill="none"
-        stroke="white"
-        strokeWidth="0.75"
-        opacity="0.04"
       />
     </svg>
   );
@@ -60,94 +46,95 @@ export default function BookingContact() {
   const phoneHref = `tel:${t('phone').replace(/\s/g, '')}`;
 
   return (
-    <div className="booking-contact-clip relative h-full bg-deep-navy p-lg md:p-[3rem]">
+    <div className="relative h-full bg-white p-lg md:p-[2.25rem] rounded-l-3xl lg:rounded-l-3xl border-r border-warm-gray/10">
+      {/* Subtle parametric decor (light version) */}
       <ContactDecor />
 
       <div className="relative z-10">
-        <h3 className="font-display text-[2rem] font-light italic text-white">
+        <h3 className="font-display text-2xl font-light italic text-charcoal tracking-tight">
           {t('heading')}
         </h3>
 
-        <div className="mt-lg space-y-sm">
-          <a href={phoneHref} data-analytics="phone" className="booking-contact-item block">
-            <Phone className="h-5 w-5 text-gold" strokeWidth={1.5} />
-            <p className="mt-xs font-body text-body font-medium text-white">
-              {t('phone')}
-            </p>
-            <p
-              className="mt-0.5 font-body text-[0.8rem]"
-              style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-            >
-              {t('phoneLabel')}
-            </p>
+        <div className="mt-6 space-y-4">
+          {/* Phone - prominent */}
+          <a 
+            href={phoneHref} 
+            data-analytics="phone" 
+            className="group flex items-start gap-3 p-3 -mx-1 rounded-2xl hover:bg-cream transition-all active:scale-[0.985]"
+          >
+            <div className="mt-0.5 text-sea-teal group-hover:scale-110 transition-transform">
+              <Phone className="h-5 w-5" strokeWidth={1.6} />
+            </div>
+            <div>
+              <p className="font-body text-[0.95rem] font-medium text-charcoal">{t('phone')}</p>
+              <p className="text-[0.8rem] text-warm-gray-light mt-0.5">{t('phoneLabel')}</p>
+            </div>
           </a>
 
-          <div className="booking-contact-item">
-            <MessageCircle className="h-5 w-5 text-gold" strokeWidth={1.5} />
-            <p className="mt-xs font-body text-body font-medium text-white">
-              {t('phone')}
-            </p>
-            <a
-              href={WHATSAPP}
-              data-analytics="whatsapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-xs inline-block font-body text-[0.85rem] text-gold transition-opacity hover:opacity-80"
-            >
-              {t('whatsappCta')}
-            </a>
-          </div>
-
-          <div className="booking-contact-item">
-            <Send className="h-5 w-5 text-gold" strokeWidth={1.5} />
-            <p className="mt-xs font-body text-body font-medium text-white">
-              {t('telegram')}
-            </p>
-            <a
-              href={TELEGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-xs inline-block font-body text-[0.85rem] text-gold transition-opacity hover:opacity-80"
-            >
-              {t('telegramCta')}
-            </a>
-          </div>
-
-          <a
-            href={VK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="booking-contact-item block"
+          {/* WhatsApp - elegant prominent button style */}
+          <a 
+            href={WHATSAPP} 
+            data-analytics="whatsapp" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group flex items-center gap-3 p-3 -mx-1 rounded-2xl border border-sea-teal/10 hover:border-sea-teal/30 hover:bg-sea-teal/5 transition-all"
           >
-            <span className="font-body text-[0.85rem] font-semibold text-gold">
-              VK
-            </span>
-            <p className="mt-xs font-body text-body text-white">{t('vk')}</p>
+            <div className="text-[#25D366] group-hover:scale-110 transition-transform">
+              <MessageCircle className="h-5 w-5" strokeWidth={1.6} />
+            </div>
+            <div className="flex-1">
+              <p className="font-body text-[0.95rem] font-medium text-charcoal">WhatsApp</p>
+              <span className="text-sm text-sea-teal group-hover:underline">Message us instantly</span>
+            </div>
           </a>
 
-          <a
-            href={YANDEX_MAPS}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="booking-contact-item block"
+          {/* Telegram */}
+          <a 
+            href={TELEGRAM} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group flex items-center gap-3 p-3 -mx-1 rounded-2xl border border-sea-teal/10 hover:border-sea-teal/30 hover:bg-sea-teal/5 transition-all"
           >
-            <MapPin className="h-5 w-5 text-gold" strokeWidth={1.5} />
-            <p className="mt-xs font-body text-[0.9rem] leading-relaxed text-white/80">
-              {t('address')}
-            </p>
+            <div className="text-[#229ED9] group-hover:scale-110 transition-transform">
+              <Send className="h-5 w-5" strokeWidth={1.6} />
+            </div>
+            <div className="flex-1">
+              <p className="font-body text-[0.95rem] font-medium text-charcoal">Telegram</p>
+              <span className="text-sm text-sea-teal group-hover:underline">{t('telegramCta')}</span>
+            </div>
+          </a>
+
+          {/* Address */}
+          <a 
+            href={YANDEX_MAPS} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group flex items-start gap-3 p-3 -mx-1 rounded-2xl hover:bg-cream transition-all"
+          >
+            <div className="mt-0.5 text-sea-teal group-hover:scale-110 transition-transform">
+              <MapPin className="h-5 w-5" strokeWidth={1.6} />
+            </div>
+            <div>
+              <p className="font-body text-[0.9rem] leading-snug text-charcoal">{t('address')}</p>
+            </div>
           </a>
         </div>
 
+        {/* Primary low-friction CTA */}
         <a
           href={WHATSAPP}
           data-analytics="whatsapp"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-lg flex w-full items-center justify-center gap-sm rounded-[2px] bg-[#25D366] px-md py-sm font-body text-[0.9rem] font-semibold text-white transition-all hover:brightness-110 hover:scale-[1.02]"
+          className="mt-8 flex w-full items-center justify-center gap-2.5 rounded-3xl bg-[#25D366] px-6 py-3.5 font-body text-sm font-semibold text-white shadow-sm transition-all hover:brightness-105 hover:scale-[1.01] active:scale-[0.985]"
         >
           <MessageCircle className="h-5 w-5" />
           {t('whatsappNow')}
         </a>
+
+        <p className="mt-3 text-center text-[10px] tracking-widest text-warm-gray-light">
+          Usually replies within minutes
+        </p>
       </div>
     </div>
   );

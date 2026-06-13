@@ -1,23 +1,16 @@
-export type GalleryCategory = 'rooms' | 'pool' | 'grounds' | 'breakfast';
+export type GalleryCategory = 'exterior' | 'interiors' | 'pool-terrace' | 'views' | 'details';
 
 export type GalleryAspect = 'landscape' | 'portrait' | 'square';
 
 export type GalleryClip = 'a' | 'b' | 'c' | 'd';
 
 export type GalleryItemKey =
-  | 'room1'
-  | 'room2'
-  | 'room3'
-  | 'room4'
-  | 'pool1'
-  | 'pool2'
-  | 'pool3'
-  | 'grounds1'
-  | 'grounds2'
-  | 'grounds3'
-  | 'grounds4'
-  | 'breakfast1'
-  | 'breakfast2';
+  | 'ext1' | 'ext2' | 'ext3'
+  | 'int1' | 'int2' | 'int3' | 'int4'
+  | 'pool1' | 'pool2' | 'terrace1'
+  | 'view1' | 'view2' | 'view3'
+  | 'detail1' | 'detail2'
+  | 'video-drone' | 'video-pool';
 
 export type GalleryItemConfig = {
   key: GalleryItemKey;
@@ -25,49 +18,61 @@ export type GalleryItemConfig = {
   aspect: GalleryAspect;
   clip: GalleryClip;
   feature: boolean;
+  category: GalleryCategory | 'video';
+  isVideo?: boolean;
+  videoSrc?: string;
 };
 
 const CLIPS: GalleryClip[] = ['a', 'b', 'c', 'd'];
 const ASPECTS: GalleryAspect[] = ['landscape', 'portrait', 'square'];
 
-const IMAGE_SOURCES: Record<GalleryItemKey, string> = {
-  room1: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
-  room2: 'https://images.unsplash.com/photo-1611892440504-42a784e15d7f?w=700&q=80',
-  room3: 'https://images.unsplash.com/photo-1598928506311-c55ded549a5d?w=900&q=80',
-  room4: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=700&q=80',
-  pool1: 'https://images.unsplash.com/photo-1540541338287-a417d50cca71?w=900&q=80',
-  pool2: 'https://images.unsplash.com/photo-1575429198097-0414c8c0e0c5?w=700&q=80',
-  pool3: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80',
-  grounds1: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80',
-  grounds2: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80',
-  grounds3: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
-  grounds4: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900&q=80',
-  breakfast1: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&q=80',
-  breakfast2: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=700&q=80',
+const IMAGE_SOURCES: Partial<Record<GalleryItemKey, string>> = {
+  ext1: '/images/hero-villa.jpg',
+  ext2: '/images/aerial-villa.jpg',
+  ext3: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=85',
+  int1: '/images/interior-living.jpg',
+  int2: 'https://images.unsplash.com/photo-1611892440504-42a784e15d7f?w=900&q=85',
+  int3: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=900&q=85',
+  int4: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=85',
+  pool1: '/images/pool-terrace.jpg',
+  pool2: 'https://images.unsplash.com/photo-1575429198097-0414c8c0e0c5?w=900&q=85',
+  terrace1: '/images/pool-terrace.jpg',
+  view1: '/images/aerial-villa.jpg',
+  view2: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=85',
+  view3: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85',
+  detail1: 'https://images.unsplash.com/photo-1600585154340-be6161a56b08?w=900&q=85',
+  detail2: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=85',
+  'video-drone': '/images/aerial-villa.jpg',
+  'video-pool': '/images/hero-villa.jpg',
+};
+
+const VIDEO_SOURCES: Partial<Record<GalleryItemKey, string>> = {
+  'video-drone': 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  'video-pool': 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
 };
 
 const ITEM_ORDER: GalleryItemKey[] = [
-  'room1',
-  'pool1',
-  'grounds1',
-  'breakfast1',
-  'room2',
-  'room3',
-  'pool2',
-  'grounds2',
-  'breakfast2',
-  'room4',
-  'pool3',
-  'grounds4',
+  'ext1', 'int1', 'pool1', 'view1', 'detail1',
+  'ext2', 'int2', 'pool2', 'view2', 'detail2',
+  'ext3', 'int3', 'terrace1', 'view3', 'int4',
+  'video-drone', 'video-pool',
 ];
 
-export const GALLERY_ITEMS: GalleryItemConfig[] = ITEM_ORDER.map((key, index) => ({
-  key,
-  src: IMAGE_SOURCES[key],
-  aspect: ASPECTS[index % ASPECTS.length],
-  clip: CLIPS[index % CLIPS.length],
-  feature: (index + 1) % 6 === 0,
-}));
+export const GALLERY_ITEMS: GalleryItemConfig[] = ITEM_ORDER.map((key, index) => {
+  const isVideo = key.startsWith('video');
+  const cats: GalleryCategory[] = ['exterior', 'interiors', 'pool-terrace', 'views', 'details'];
+  const cat = isVideo ? 'video' : cats[index % cats.length];
+  return {
+    key,
+    src: IMAGE_SOURCES[key] as string,
+    aspect: ASPECTS[index % ASPECTS.length],
+    clip: CLIPS[index % CLIPS.length],
+    feature: index % 5 === 0 || isVideo,
+    category: cat as any,
+    isVideo,
+    videoSrc: isVideo ? VIDEO_SOURCES[key] : undefined,
+  };
+});
 
-export const GALLERY_TABS = ['all', 'rooms', 'pool', 'grounds', 'breakfast'] as const;
+export const GALLERY_TABS = ['all', 'exterior', 'interiors', 'pool-terrace', 'views', 'details'] as const;
 export type GalleryTab = (typeof GALLERY_TABS)[number];

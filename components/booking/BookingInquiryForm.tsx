@@ -93,7 +93,7 @@ export default function BookingInquiryForm() {
 
   return (
     <div className="h-full bg-white p-lg md:p-[3rem]">
-      <h3 className="font-body text-h3 font-semibold text-deep-navy">
+      <h3 className="font-body text-h3 font-semibold text-charcoal">
         {t('heading')}
       </h3>
       <p className="mt-xs font-body text-body text-charcoal/60">

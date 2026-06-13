@@ -1,285 +1,198 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import AmenityIcon from '@/components/ui/AmenityIcon';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Waves,
+  UtensilsCrossed,
+  Car,
+  Utensils,
+  Wind,
+  Wifi,
+  Sparkles,
+  ParkingSquare,
+  Map,
+  Coffee,
+} from 'lucide-react';
+import HadidFlow from '@/components/ui/HadidFlow';
+import ParametricAccent from '@/components/ui/ParametricAccent';
+import { staggerContainer, revealUp, springConfig } from '@/lib/animations';
 
-gsap.registerPlugin(ScrollTrigger);
+const ICONS: Record<string, React.ElementType> = {
+  heatedPools: Waves,
+  bbq: UtensilsCrossed,
+  freeTransfer: Car,
+  kitchen: Utensils,
+  ac: Wind,
+  wifi: Wifi,
+  dailyCleaning: Sparkles,
+  parking: ParkingSquare,
+  excursions: Map,
+  breakfast: Coffee,
+};
 
-const POOL_IMAGE =
-  'https://images.unsplash.com/photo-1540541338287-a417d50cca71?w=1000&q=85';
-
-type GroupKey = 'facilities' | 'services' | 'rooms';
-
-const GROUPS: {
-  key: GroupKey;
-  itemKeys: string[];
-  gridCols: { base: string; md: string; lg: string }[];
-  showDivider: boolean;
-}[] = [
-  {
-    key: 'facilities',
-    itemKeys: ['heatedPools', 'parking', 'kitchen', 'breakfast'],
-    gridCols: [
-      { base: 'col-span-1', md: 'md:col-start-1', lg: 'lg:col-start-1' },
-      { base: 'col-span-1', md: 'md:col-start-2', lg: 'lg:col-start-2' },
-      { base: 'col-span-1', md: 'md:col-start-3', lg: 'lg:col-start-4' },
-      { base: 'col-span-1', md: 'md:col-start-4', lg: 'lg:col-start-5' },
-    ],
-    showDivider: true,
-  },
-  {
-    key: 'services',
-    itemKeys: ['airportTransfer', 'trainTransfer', 'beachTransfer', 'excursions'],
-    gridCols: [
-      { base: 'col-span-1', md: 'md:col-start-1', lg: 'lg:col-start-2' },
-      { base: 'col-span-1', md: 'md:col-start-2', lg: 'lg:col-start-3' },
-      { base: 'col-span-1', md: 'md:col-start-3', lg: 'lg:col-start-5' },
-      { base: 'col-span-1', md: 'md:col-start-4', lg: 'lg:col-start-6' },
-    ],
-    showDivider: true,
-  },
-  {
-    key: 'rooms',
-    itemKeys: ['ac', 'wifi', 'laundry', 'housekeeping'],
-    gridCols: [
-      { base: 'col-span-1', md: 'md:col-start-1', lg: 'lg:col-start-1' },
-      { base: 'col-span-1', md: 'md:col-start-2', lg: 'lg:col-start-3' },
-      { base: 'col-span-1', md: 'md:col-start-3', lg: 'lg:col-start-4' },
-      { base: 'col-span-1', md: 'md:col-start-4', lg: 'lg:col-start-6' },
-    ],
-    showDivider: false,
-  },
-];
-
-function HeaderFlow() {
-  return (
-    <svg
-      viewBox="0 0 800 48"
-      className="mx-auto mt-md h-12 w-full max-w-2xl"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M0,24 C100,8 200,40 300,24 S500,8 600,24 S720,36 800,24"
-        fill="none"
-        stroke="white"
-        strokeWidth="1"
-        opacity="0.06"
-      />
-      <path
-        d="M40,32 C160,16 280,36 400,20 S560,12 680,28 S740,34 800,26"
-        fill="none"
-        stroke="white"
-        strokeWidth="0.75"
-        opacity="0.06"
-      />
-      <path
-        d="M80,16 C200,28 320,4 440,20 S600,32 720,12"
-        fill="none"
-        stroke="var(--gold-light)"
-        strokeWidth="0.5"
-        opacity="0.06"
-      />
-    </svg>
-  );
-}
+const AMENITY_KEYS = [
+  'heatedPools',
+  'bbq',
+  'freeTransfer',
+  'kitchen',
+  'ac',
+  'wifi',
+  'dailyCleaning',
+  'parking',
+  'excursions',
+  'breakfast',
+] as const;
 
 export default function Amenities() {
   const t = useTranslations('amenities');
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const poolImageRef = useRef<HTMLDivElement>(null);
-  const poolPanelRef = useRef<HTMLDivElement>(null);
 
-  const headingText = t('heading');
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.985 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 90,
+        damping: 18,
+        delay: i * 0.04,
+      },
+    }),
+  };
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const heading = headingRef.current;
-    if (!section || !heading) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    if (prefersReducedMotion) {
-      gsap.set(section.querySelectorAll('[data-heading-char]'), { opacity: 1, y: 0 });
-      gsap.set(section.querySelectorAll('[data-amenity-card]'), { opacity: 1, y: 0 });
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      const chars = heading.querySelectorAll('[data-heading-char]');
-      gsap.fromTo(
-        chars,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.025,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: heading,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-
-      gsap.fromTo(
-        '[data-amenity-card]',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: '[data-amenities-groups]',
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-
-      const poolImage = poolImageRef.current;
-      const poolPanel = poolPanelRef.current;
-      if (poolImage && poolPanel) {
-        gsap.to(poolImage, {
-          yPercent: 25,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: poolPanel,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, [headingText]);
+  const iconVariants = {
+    rest: { scale: 1, rotate: 0 },
+    hover: { scale: 1.1, rotate: 2 },
+  };
 
   return (
     <section
       id="amenities"
       ref={sectionRef}
-      className="bg-charcoal section-padding"
+      className="bg-cream section-padding relative overflow-hidden"
     >
-      <div className="container-content">
-        {/* Header */}
-        <div className="text-center">
-          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
+      {/* Very subtle parametric background texture */}
+      <HadidFlow variant="background" color="sea-teal" opacity={0.02} animate />
+
+      <div className="container-content relative z-10">
+        {/* Elegant Header */}
+        <div className="text-center max-w-2xl mx-auto">
+          <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.42em] text-sea-teal">
             {t('eyebrow')}
           </p>
-
-          <h2
-            ref={headingRef}
-            className="mt-sm font-display text-h1 italic leading-[1.1] text-white"
-            aria-label={headingText}
-          >
-            {headingText.split('').map((char, index) => (
-              <span
-                key={`${char}-${index}`}
-                data-heading-char
-                className="inline-block opacity-0"
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
+          <h2 className="mt-2 font-display text-h1 italic leading-[0.96] text-charcoal">
+            {t('heading')}
           </h2>
-
-          <HeaderFlow />
-        </div>
-
-        {/* Pool feature panel */}
-        <div
-          ref={poolPanelRef}
-          className="mt-xl grid items-center gap-lg overflow-hidden lg:grid-cols-[45%_55%]"
-        >
-          <div className="relative min-h-[320px] overflow-hidden lg:min-h-[400px]">
-            <div
-              ref={poolImageRef}
-              className="amenity-pool-clip absolute inset-0 will-change-transform"
-            >
-              <Image
-                src={POOL_IMAGE}
-                alt={t('feature.imageAlt')}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 45vw"
-              />
-            </div>
-          </div>
-
-          <div className="lg:pl-md">
-            <p className="font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
-              {t('feature.eyebrow')}
-            </p>
-            <h3 className="mt-sm font-display text-[3rem] font-light italic leading-[1.1] text-white">
-              {t('feature.heading')}
-            </h3>
-            <p
-              className="mt-md font-body text-body leading-[1.8]"
-              style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-            >
-              {t('feature.body')}
-            </p>
-            <div
-              className="mt-md flex flex-wrap gap-sm font-body text-[0.85rem]"
-              style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-            >
-              <span className="text-gold">{t('feature.stats.pools')}</span>
-              <span aria-hidden="true">·</span>
-              <span>{t('feature.stats.yearRound')}</span>
-              <span aria-hidden="true">·</span>
-              <span>{t('feature.stats.filtered')}</span>
-            </div>
+          <p className="mt-3 text-[1.05rem] text-warm-gray-light max-w-md mx-auto">
+            {t('intro')}
+          </p>
+          <div className="mx-auto mt-4">
+            <ParametricAccent variant="line" opacity={0.12} className="w-20" />
           </div>
         </div>
 
-        {/* Amenity groups */}
-        <div data-amenities-groups className="mt-2xl space-y-xl">
-          {GROUPS.map((group) => (
-            <div key={group.key} className="relative">
-              <div className="mb-md flex items-center gap-sm">
-                <p className="font-body text-[0.7rem] font-medium uppercase tracking-[0.35em] text-gold">
-                  {t(`groups.${group.key}.label`)}
+        {/* Signature Feature — Two Heated Pools (curved organic container) */}
+        <div className="mt-12 max-w-5xl mx-auto">
+          <div className="relative rounded-[3.5rem] overflow-hidden bg-white shadow-[0_25px_70px_-20px_rgb(0,0,0,0.08)] p-1">
+            <div className="flex flex-col lg:flex-row items-stretch gap-1">
+              {/* Image / visual side with curve */}
+              <div className="lg:w-5/12 relative min-h-[280px] lg:min-h-[360px] bg-warm-stone rounded-[3rem] overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_30%,rgba(91,163,184,0.12)_0%,transparent_60%)]" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <Waves className="mx-auto h-14 w-14 text-sea-teal mb-3" strokeWidth={1.3} />
+                    <div className="font-display text-3xl italic text-sea-teal tracking-tight">
+                      {t('feature.heading')}
+                    </div>
+                    <div className="mt-1 text-xs uppercase tracking-[2px] text-warm-gray-light">
+                      {t('feature.stats.pools')} · {t('feature.stats.yearRound')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Text side */}
+              <div className="lg:w-7/12 p-8 lg:p-10 flex flex-col justify-center">
+                <p className="font-body text-[0.7rem] uppercase tracking-[0.4em] text-sea-teal mb-2">
+                  {t('feature.eyebrow')}
                 </p>
-                <div
-                  className="hidden h-px flex-1 lg:block"
-                  style={{ background: 'rgba(200, 169, 110, 0.2)' }}
-                  aria-hidden="true"
-                />
-              </div>
-
-              <div className="amenities-grid relative min-h-[200px]">
-                {group.itemKeys.map((itemKey, index) => (
-                  <AmenityIcon
-                    key={itemKey}
-                    itemKey={itemKey}
-                    label={t(`groups.${group.key}.items.${itemKey}`)}
-                    gridClass={`${group.gridCols[index].base} ${group.gridCols[index].md} ${group.gridCols[index].lg}`}
-                  />
-                ))}
-
-                {group.showDivider && (
-                  <div
-                    className="pointer-events-none absolute -right-3 top-0 hidden h-full w-px lg:block"
-                    style={{ background: 'rgba(200, 169, 110, 0.35)' }}
-                    aria-hidden="true"
-                  />
-                )}
+                <p className="text-[1.05rem] leading-[1.7] text-warm-gray max-w-prose">
+                  {t('feature.body')}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-sm text-warm-gray-light">
+                  <span className="font-medium text-charcoal">{t('feature.stats.pools')}</span>
+                  <span>·</span>
+                  <span>{t('feature.stats.yearRound')}</span>
+                  <span>·</span>
+                  <span>{t('feature.stats.filtered')}</span>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Beautiful flowing masonry/grid of amenities */}
+        <motion.div 
+          className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-6 max-w-6xl mx-auto"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+        >
+          {AMENITY_KEYS.map((key, index) => {
+            const Icon = ICONS[key];
+            const title = t(`items.${key}.title`);
+            const desc = t(`items.${key}.desc`);
+
+            return (
+              <motion.div
+                key={key}
+                variants={revealUp}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.015,
+                  transition: { type: 'spring', stiffness: 280, damping: 18 }
+                }}
+                className="group relative flex flex-col rounded-[2.25rem] bg-white p-7 lg:p-8 shadow-[0_10px_40px_-15px_rgb(0,0,0,0.06)] border border-warm-gray/5 hover:border-sea-teal/20 transition-colors duration-300"
+              >
+                {/* Subtle curved decorative element on some cards */}
+                {index % 3 === 0 && (
+                  <div className="absolute top-5 right-5 h-px w-8 bg-gradient-to-r from-sea-teal/30 to-transparent rounded" />
+                )}
+
+                <div className="mb-5">
+                  <motion.div
+                    variants={iconVariants}
+                    initial="rest"
+                    whileHover="hover"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sea-teal/8 text-sea-teal group-hover:bg-sea-teal/12 transition-colors"
+                  >
+                    {Icon && <Icon className="h-6 w-6" strokeWidth={1.7} />}
+                  </motion.div>
+                </div>
+
+                <h3 className="font-body text-[1.05rem] font-semibold tracking-tight text-charcoal mb-2.5">
+                  {title}
+                </h3>
+
+                <p className="text-[0.95rem] leading-[1.65] text-warm-gray-light flex-1">
+                  {desc}
+                </p>
+
+                {/* Subtle reveal on hover */}
+                <div className="mt-4 h-px w-6 bg-sea-teal/30 group-hover:w-10 transition-all duration-300" />
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Gentle closing note */}
+        <div className="mt-10 text-center text-sm text-warm-gray-light tracking-wide max-w-md mx-auto">
+          Каждый элемент создан для вашего полного комфорта и ощущения дома вдали от дома.
         </div>
       </div>
     </section>

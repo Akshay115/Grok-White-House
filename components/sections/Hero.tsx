@@ -3,102 +3,145 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import HadidFlow from '@/components/ui/HadidFlow';
 
-const STAT_KEYS = ['rating', 'reviews', 'airport', 'pools'] as const;
+const HERO_IMAGE = '/images/hero-main.jpg';
 
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=85';
+// Subtle light particles for cinematic atmosphere (dust / light specks)
+function LightParticles() {
+  return (
+    <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+      {Array.from({ length: 7 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-white"
+          style={{
+            left: `${15 + ((i * 11) % 70)}%`,
+            top: `${25 + (i % 4) * 15}%`,
+            width: 1.5 + (i % 3) * 0.8,
+            height: 1.5 + (i % 3) * 0.8,
+            opacity: 0.06 + (i % 3) * 0.025,
+            filter: 'blur(0.6px)',
+          }}
+          animate={{
+            y: [0, -28 - i * 1.5, 0],
+            x: [0, (i % 2 === 0 ? 8 : -6), 0],
+            opacity: [0.05, 0.12, 0.05],
+          }}
+          transition={{
+            duration: 11 + i * 1.2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: i * 0.6,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function Hero() {
   const t = useTranslations('hero');
   const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+
+  // Mouse-driven subtle parallax / tilt for decorative layers (cinematic depth)
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 45, damping: 18, mass: 0.6 });
+  const springY = useSpring(mouseY, { stiffness: 45, damping: 18, mass: 0.6 });
+
+  const tiltX = useTransform(springY, [-400, 400], [1.8, -1.8]);
+  const tiltY = useTransform(springX, [-400, 400], [-2.2, 2.2]);
+
+  // Text stagger with spring physics (Framer Motion)
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.085,
+        delayChildren: 0.35,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 42 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 110,
+        damping: 21,
+        mass: 0.75,
+      },
+    },
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 28 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 140,
+        damping: 24,
+        mass: 0.6,
+      },
+    },
+  };
 
   useEffect(() => {
     const section = sectionRef.current;
-    const image = imageRef.current;
-    if (!section || !image) return;
+    if (!section) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
 
-    if (prefersReducedMotion) {
-      gsap.set(image, { opacity: 1 });
-      gsap.set(section.querySelectorAll('[data-hero-animate]'), {
-        opacity: 1,
-        y: 0,
-      });
-      return;
-    }
+    const handleMouseLeave = () => {
+      mouseX.set(0);
+      mouseY.set(0);
+    };
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+    section.addEventListener('mousemove', handleMouseMove);
+    section.addEventListener('mouseleave', handleMouseLeave);
 
-      tl.fromTo(image, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: 'power1.inOut' }, 0);
+    return () => {
+      section.removeEventListener('mousemove', handleMouseMove);
+      section.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [mouseX, mouseY]);
 
-      tl.fromTo(
-        '[data-hero-eyebrow]',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        0.3
-      );
-
-      tl.fromTo(
-        '[data-hero-headline]',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        0.5
-      );
-
-      tl.fromTo(
-        '[data-hero-subheadline]',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        0.7
-      );
-
-      tl.fromTo(
-        '[data-hero-body]',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.5 },
-        0.9
-      );
-
-      tl.fromTo(
-        '[data-hero-cta]',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.15 },
-        1.1
-      );
-
-      tl.fromTo(
-        '[data-hero-stat]',
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 },
-        1.1
-      );
-
-      tl.fromTo(
-        '[data-hero-scroll]',
-        { opacity: 0 },
-        { opacity: 1, duration: 0.4 },
-        1.3
-      );
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-[100svh] min-h-[600px] overflow-hidden bg-charcoal"
+      onMouseMove={(e) => {
+        if (prefersReducedMotion) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        mouseX.set(e.clientX - rect.left - rect.width / 2);
+        mouseY.set(e.clientY - rect.top - rect.height / 2);
+      }}
+      onMouseLeave={() => {
+        if (!prefersReducedMotion) {
+          mouseX.set(0);
+          mouseY.set(0);
+        }
+      }}
+      className="relative h-[100svh] min-h-[640px] overflow-hidden bg-[#f8f5f0]"
     >
-      {/* Background image */}
-      <div ref={imageRef} className="absolute inset-0 opacity-0">
+      {/* Cinematic background — high-end architectural photography of the white villa */}
+      <div className="absolute inset-0">
         <Image
           src={HERO_IMAGE}
           alt={t('imageAlt')}
@@ -108,119 +151,136 @@ export default function Hero() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="hero-gradient absolute inset-0" />
+
+        {/* Cinematic depth layers */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/[0.03] via-black/[0.015] to-black/[0.07]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.18)_0%,transparent_55%)]" />
+
+        {/* Subtle light particles / atmospheric specks */}
+        <LightParticles />
       </div>
 
-      {/* Parametric background forms */}
-      <HadidFlow
-        variant="hero"
-        color="white"
-        opacity={0.06}
-        animate
-        className="z-[1]"
-      />
+      {/* Very subtle parametric flowing line overlays — refined Zaha Hadid language */}
+      <motion.div
+        style={{
+          rotateX: prefersReducedMotion ? 0 : tiltX,
+          rotateY: prefersReducedMotion ? 0 : tiltY,
+          transformPerspective: 1200,
+        }}
+        className="absolute inset-0 z-[2] pointer-events-none"
+      >
+        <HadidFlow
+          variant="hero"
+          color="sea-teal"
+          opacity={0.055}
+          animate
+        />
+      </motion.div>
 
-      {/* Main content */}
-      <div className="container-content relative z-10 flex h-full items-center pt-[5rem] pb-[11rem] md:pb-[9rem]">
-        <div className="max-w-3xl">
-          <p
-            data-hero-animate
-            data-hero-eyebrow
-            className="font-body text-[0.75rem] font-normal uppercase tracking-[0.5em] text-gold opacity-0"
+      <motion.div
+        style={{
+          rotateX: prefersReducedMotion ? 0 : tiltX,
+          rotateY: prefersReducedMotion ? 0 : tiltY,
+          transformPerspective: 1400,
+        }}
+        className="absolute inset-0 z-[1] pointer-events-none scale-[1.08]"
+      >
+        <HadidFlow
+          variant="hero"
+          color="gold"
+          opacity={0.035}
+          animate
+        />
+      </motion.div>
+
+      {/* Foreground cinematic content — elegantly centered */}
+      <div className="relative z-10 flex h-full items-center justify-center px-6">
+        <div className="max-w-[820px] text-center">
+          {/* Eyebrow */}
+          <motion.p
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            className="mb-4 font-body text-[0.72rem] font-normal uppercase tracking-[0.48em] text-sea-teal/90"
           >
             {t('eyebrow')}
-          </p>
+          </motion.p>
 
-          <h1
-            data-hero-animate
-            data-hero-headline
-            className="mt-sm font-display text-hero italic leading-[0.95] text-white opacity-0"
+          {/* Main headline — Russian primary, large & refined */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            {t('headline')}
-          </h1>
+            <h1 className="font-display text-[clamp(3.1rem,8.2vw,5.8rem)] leading-[0.88] tracking-[-0.015em] text-charcoal italic">
+              {t('headline')}
+            </h1>
 
-          <p
-            data-hero-animate
-            data-hero-subheadline
-            className="mt-sm font-display text-[clamp(1.4rem,2.5vw,2rem)] font-light italic text-gold-light opacity-0"
+            {/* Elegant English subtitle below */}
+            <p className="mt-1 font-display text-[clamp(1.15rem,2.8vw,1.85rem)] font-light tracking-[0.01em] text-charcoal/70 italic">
+              {t('subtitle')}
+            </p>
+          </motion.div>
+
+          {/* Poetic tagline */}
+          <motion.p
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            className="mx-auto mt-6 max-w-[620px] font-body text-[1.02rem] leading-[1.65] text-charcoal/75"
           >
-            {t('subheadline')}
-          </p>
+            {t('tagline')}
+          </motion.p>
 
-          <p
-            data-hero-animate
-            data-hero-body
-            className="mt-md max-w-[480px] font-body text-body leading-[1.7] opacity-0"
-            style={{ color: 'rgba(255, 255, 255, 0.75)' }}
-          >
-            {t('body')}
-          </p>
-
-          <div className="mt-lg flex flex-wrap gap-sm">
-            <a
+          {/* CTAs */}
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+            {/* Primary CTA — elegant, magnetic, glow on hover */}
+            <motion.a
               href="#booking"
-              data-analytics="book"
-              data-hero-animate
-              data-hero-cta
-              className="hero-cta-primary opacity-0"
+              variants={ctaVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.015 }}
+              whileTap={{ scale: 0.985 }}
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-[2.5rem] bg-sea-teal px-9 py-[0.92rem] font-body text-[0.85rem] font-semibold uppercase tracking-[0.11em] text-white shadow-[0_10px_30px_-12px_rgb(91,163,184,0.45)] transition-all duration-300 hover:bg-sea-teal-light hover:text-charcoal"
             >
               {t('ctaPrimary')}
-            </a>
-            <a
-              href="#rooms"
-              data-hero-animate
-              data-hero-cta
-              className="hero-cta-secondary opacity-0"
+              {/* Elegant inner glow / draw effect */}
+              <span className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-white/0 via-white/25 to-white/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </motion.a>
+
+            {/* Secondary CTA — subtle with draw/scale */}
+            <motion.a
+              href="#about"
+              variants={ctaVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.985 }}
+              className="group relative inline-flex items-center justify-center rounded-[2.5rem] border border-charcoal/35 px-8 py-[0.9rem] font-body text-[0.84rem] font-medium uppercase tracking-[0.115em] text-charcoal transition-all duration-300 hover:border-sea-teal hover:text-sea-teal"
             >
               {t('ctaSecondary')}
-            </a>
+              {/* Subtle animated underline draw */}
+              <span className="absolute -bottom-[1px] left-1/2 h-px w-0 -translate-x-1/2 bg-sea-teal transition-all duration-300 group-hover:w-8" />
+            </motion.a>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <a
+      {/* Elegant scroll prompt — minimal and refined */}
+      <motion.a
         href="#about"
-        data-hero-animate
-        data-hero-scroll
-        className="absolute bottom-[7.5rem] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-xs opacity-0 md:bottom-[6.5rem]"
         aria-label={t('aboutAria')}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 0.7, y: 0 }}
+        transition={{ delay: 1.6, duration: 0.7, ease: 'easeOut' }}
+        className="absolute bottom-9 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1.5 text-charcoal/50"
       >
-        <div className="relative flex flex-col items-center">
-          <div className="hero-scroll-line" />
-          <div className="hero-scroll-dot absolute top-0" />
-        </div>
-        <span
-          className="font-body text-[0.65rem] font-normal uppercase tracking-[0.3em]"
-          style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-        >
+        <div className="h-px w-5 bg-current" />
+        <span className="font-body text-[0.6rem] font-normal uppercase tracking-[0.32em]">
           {t('scrollHint')}
         </span>
-      </a>
-
-      {/* Statistics bar */}
-      <div className="hero-stats-bar absolute inset-x-0 bottom-0 z-10 border-t border-white/10">
-        <div className="container-content grid grid-cols-2 gap-sm px-sm py-md md:grid-cols-4 md:gap-md md:py-sm">
-          {STAT_KEYS.map((key) => (
-            <div
-              key={key}
-              data-hero-animate
-              data-hero-stat
-              className="flex flex-col items-center text-center opacity-0 md:items-start md:text-left"
-            >
-              <span className="font-display text-[2.5rem] font-light italic leading-none text-gold">
-                {t(`stats.${key}.value`)}
-              </span>
-              <span
-                className="mt-xs font-body text-[0.75rem] font-normal uppercase tracking-[0.1em]"
-                style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-              >
-                {t(`stats.${key}.label`)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      </motion.a>
     </section>
   );
 }

@@ -66,5 +66,59 @@ export function buildLodgingBusinessJsonLd() {
       'https://vk.com/sochiwhitehouse',
       'https://www.instagram.com/sochi_white_house',
     ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Номера и апартаменты',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'HotelRoom',
+            name: 'Делюкс с террасой',
+            description: 'Элегантный делюкс с собственной террасой и видом на сад.',
+          },
+          price: '4200',
+          priceCurrency: 'RUB',
+          availability: 'https://schema.org/InStock',
+          url: `${siteUrl}/#rooms`,
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'HotelRoom',
+            name: 'Люкс с видом на бассейн',
+            description: 'Просторный люкс с панорамным видом на бассейны.',
+          },
+          price: '6800',
+          priceCurrency: 'RUB',
+          availability: 'https://schema.org/InStock',
+          url: `${siteUrl}/#rooms`,
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'HotelRoom',
+            name: 'Семейный люкс',
+            description: 'Идеальное пространство для семьи с двумя спальнями и кухней.',
+          },
+          price: '9500',
+          priceCurrency: 'RUB',
+          availability: 'https://schema.org/InStock',
+          url: `${siteUrl}/#rooms`,
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'HotelRoom',
+            name: 'Приватная вилла',
+            description: 'Целая приватная резиденция с гостиной, кухней и террасой.',
+          },
+          price: '14000',
+          priceCurrency: 'RUB',
+          availability: 'https://schema.org/InStock',
+          url: `${siteUrl}/#rooms`,
+        },
+      ],
+    },
   };
 }

@@ -101,59 +101,60 @@ export default function Reviews() {
     <section
       id="reviews"
       ref={sectionRef}
-      className="overflow-hidden bg-deep-navy section-padding"
+      className="overflow-hidden bg-cream section-padding"
     >
       <div className="container-content">
         {/* Header */}
-        <p className="text-center font-body text-[0.7rem] font-normal uppercase tracking-[0.4em] text-gold">
+        <p className="text-center font-body text-[0.7rem] font-normal uppercase tracking-[0.42em] text-sea-teal">
           {t('eyebrow')}
         </p>
 
-        {/* Rating hero */}
+        {/* Elegant overall rating with count-up */}
         <div data-reviews-rating className="mt-lg text-center">
-          <span
-            ref={ratingRef}
-            className="block font-display text-[9rem] font-light italic leading-none text-gold"
-          >
-            0.0
-          </span>
+          <div className="flex flex-col items-center">
+            <span
+              ref={ratingRef}
+              className="block font-display text-[7rem] md:text-[8.5rem] font-light italic leading-[0.85] text-charcoal"
+            >
+              0.0
+            </span>
 
-          <div
-            ref={starsRef}
-            className="mt-sm flex justify-center gap-1"
-            aria-hidden="true"
-          >
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                data-star
-                className="h-6 w-6 fill-gold text-gold"
-                strokeWidth={0}
-              />
-            ))}
+            <div
+              ref={starsRef}
+              className="mt-2 flex justify-center gap-1"
+              aria-hidden="true"
+            >
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  data-star
+                  className="h-5 w-5 fill-sea-teal text-sea-teal"
+                  strokeWidth={0}
+                />
+              ))}
+            </div>
+
+            <p
+              className="mt-3 font-body text-[0.95rem] text-warm-gray-light tracking-tight"
+            >
+              {t('ratingMeta')}
+            </p>
           </div>
-
-          <p
-            className="mt-sm font-body text-body"
-            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-          >
-            {t('ratingMeta')}
-          </p>
         </div>
 
-        {/* Carousel */}
+        {/* Flowing carousel of elegant testimonial cards */}
         <ReviewCarousel reviews={reviews} isVisible={isVisible} />
 
-        {/* CTA */}
-        <div className="mt-lg text-center">
+        {/* CTA to Yandex */}
+        <div className="mt-xl text-center">
           <a
             href={YANDEX_REVIEWS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-xs font-body text-[0.9rem] font-medium text-gold transition-all hover:underline"
+            className="inline-flex items-center gap-1.5 font-body text-[0.85rem] font-medium text-sea-teal transition-all hover:text-charcoal group"
           >
             {t('cta')}
-            <ExternalLink className="h-3 w-3" strokeWidth={2} />
+            <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
           </a>
         </div>
       </div>

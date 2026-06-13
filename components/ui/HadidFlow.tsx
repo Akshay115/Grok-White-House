@@ -20,7 +20,7 @@ export type HadidFlowVariant =
   | 'background'
   | 'footer';
 
-export type HadidFlowColor = 'white' | 'gold' | 'navy';
+export type HadidFlowColor = 'white' | 'gold' | 'navy' | 'sea-teal';
 
 export type HadidFlowProps = {
   variant?: HadidFlowVariant;
@@ -38,6 +38,7 @@ const COLOR_MAP: Record<HadidFlowColor, string> = {
   white: 'var(--white)',
   gold: 'var(--gold)',
   navy: 'var(--deep-navy)',
+  'sea-teal': 'var(--sea-teal)',
 };
 
 const VARIANT_LAYOUT = {
