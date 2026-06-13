@@ -1,0 +1,342 @@
+{
+  "metadata": {
+    "title": "White House Sochi — Boutique Guest House in Adler",
+    "description": "White House boutique guest house in Adler, Sochi. Designer rooms, two heated pools, free airport transfer. 4.9 rating on Yandex Maps. Book: +7 (962) 157-44-97",
+    "keywords": "guest house Adler, Sochi hotel, Adler accommodation, White House Sochi, boutique hotel Sochi, book Sochi",
+    "ogTitle": "White House Sochi — Premium Boutique Guest House",
+    "ogDescription": "Designer rooms, two heated pools, free airport transfer. 4.9 ★ on Yandex Maps.",
+    "ogImage": "/og-image-en.jpg"
+  },
+  "nav": {
+    "rooms": "Rooms",
+    "amenities": "Amenities",
+    "location": "Location",
+    "gallery": "Gallery",
+    "reviews": "Reviews",
+    "book": "Book Now",
+    "booking": "Booking",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "logo": "WHITE HOUSE",
+    "logoSubtitle": "SOCHI · ADLER",
+    "ariaLabel": "Main navigation"
+  },
+  "hero": {
+    "eyebrow": "ADLER · SOCHI · RUSSIA",
+    "headline": "White House",
+    "subheadline": "Premium Boutique Guest House",
+    "body": "Designer rooms, heated pools, and heartfelt service just 7 minutes from Adler Airport.",
+    "ctaPrimary": "Book Now",
+    "ctaSecondary": "View Rooms",
+    "scrollHint": "SCROLL",
+    "aboutAria": "Go to the about section",
+    "imageAlt": "White House guest house in Adler — white building, pools and greenery",
+    "stats": {
+      "rating": { "value": "4.9 ★", "label": "Yandex Maps Rating" },
+      "reviews": { "value": "19", "label": "Reviews" },
+      "airport": { "value": "7 min", "label": "To Airport" },
+      "pools": { "value": "2", "label": "Heated Pools" }
+    }
+  },
+  "about": {
+    "eyebrow": "ABOUT US",
+    "heading": "Where Architecture Meets Hospitality",
+    "paragraphs": {
+      "p1": "White House is a newly built guest house with designer renovation, where a crisp white aesthetic meets modern interiors. Crystal cleanliness, thoughtful details, and a sense of warmth create a truly premium atmosphere.",
+      "p2": "The property sits at a road junction between Krasnaya Polyana mountain resorts and the Sirius Federal Territory. Adler Airport is 7 minutes away, Rosa Khutor 30 minutes, and Sirius beaches 10 minutes by car.",
+      "p3": "Hosts Irina and Vladimir welcome every guest like close friends: personal attention, delicious breakfasts, and help with routes and excursions. Here, hospitality is not a service — it is a way of life."
+    },
+    "quote": {
+      "text": "We've come back here as a family for the third time!",
+      "attribution": "Nina Shtaros, guest"
+    },
+    "facts": {
+      "airport": { "value": "7 min", "label": "To Airport" },
+      "rosa": { "value": "30 min", "label": "To Rosa Khutor" },
+      "beach": { "value": "10 min", "label": "To Beach" }
+    },
+    "images": {
+      "main": "White House guest house exterior",
+      "secondary1": "Heated pool on the property",
+      "secondary2": "Designer room interior"
+    }
+  },
+  "rooms": {
+    "eyebrow": "ROOMS & SUITES",
+    "heading": "Your Home on the Black Sea",
+    "subheading": "Every room is its own story of comfort",
+    "details": "Details",
+    "metaSeparator": "·",
+    "banner": {
+      "text": "Free transfer included with bookings of 3+ nights",
+      "cta": "Contact Us"
+    },
+    "items": {
+      "standard": {
+        "name": "Standard",
+        "area": "~20 m²",
+        "capacity": "2 guests",
+        "capacityShort": "2",
+        "priceFrom": "from ₽3,500 / night",
+        "features": ["Air Conditioning", "Wi-Fi", "Kitchenette", "Balcony"]
+      },
+      "deluxe": {
+        "name": "Deluxe",
+        "area": "~28 m²",
+        "capacity": "2–3 guests",
+        "capacityShort": "2–3",
+        "priceFrom": "from ₽5,000 / night",
+        "features": ["Pool View", "Double Bed", "Air Conditioning", "Wi-Fi", "Balcony"]
+      },
+      "family": {
+        "name": "Family",
+        "area": "~36 m²",
+        "capacity": "4 guests",
+        "capacityShort": "4",
+        "priceFrom": "from ₽6,500 / night",
+        "features": ["Two Bedrooms", "Full Kitchen", "Air Conditioning", "Wi-Fi", "Balcony"]
+      },
+      "apartment": {
+        "name": "Apartment Suite",
+        "area": "~45 m²",
+        "capacity": "up to 5 guests",
+        "capacityShort": "5",
+        "priceFrom": "from ₽8,500 / night",
+        "features": ["Premium Finish", "Lounge", "Large Balcony", "Full Kitchen"]
+      }
+    }
+  },
+  "amenities": {
+    "eyebrow": "AMENITIES",
+    "heading": "Everything for Your Comfort",
+    "groups": {
+      "facilities": {
+        "label": "Facilities",
+        "items": {
+          "heatedPools": "Two Heated Pools",
+          "parking": "Free Parking",
+          "kitchen": "In-Room Kitchen",
+          "breakfast": "Breakfast Included"
+        }
+      },
+      "services": {
+        "label": "Services",
+        "items": {
+          "airportTransfer": "Airport Transfer",
+          "trainTransfer": "Train Station Transfer",
+          "beachTransfer": "Sirius Beach Transfer",
+          "excursions": "Regional Excursions"
+        }
+      },
+      "rooms": {
+        "label": "In Every Room",
+        "items": {
+          "ac": "Air Conditioning",
+          "wifi": "Free Wi-Fi",
+          "laundry": "Laundry Service",
+          "housekeeping": "Daily Housekeeping"
+        }
+      }
+    },
+    "feature": {
+      "eyebrow": "SIGNATURE FEATURE",
+      "heading": "Two Heated Pools",
+      "body": "Unwind in the crystal-clear water of our heated pools. Perfect after a day on Rosa Khutor's slopes or a summer afternoon at the beach.",
+      "imageAlt": "White House heated pools in evening light",
+      "stats": {
+        "pools": "2 pools",
+        "yearRound": "Year-round",
+        "filtered": "Clean filtered water"
+      }
+    }
+  },
+  "location": {
+    "eyebrow": "LOCATION",
+    "heading": "At the Heart of Resort Sochi",
+    "subheading": "The perfect base for mountains and the sea",
+    "address": "2/17 Ivanovskaya St., Sochi, Krasnodar Krai",
+    "phone": "+7 (962) 157-44-97",
+    "directions": "Get Directions",
+    "unit": "min",
+    "mapLabel": "White House · Adler",
+    "destinations": {
+      "airport": { "label": "Adler Airport", "time": "7" },
+      "station": { "label": "Adler Station", "time": "12" },
+      "beach": { "label": "Sirius Beaches", "time": "10" },
+      "rosa": { "label": "Rosa Khutor", "time": "30" },
+      "olympic": { "label": "Olympic Park", "time": "10" },
+      "shops": { "label": "Shops & Pharmacy", "time": "2" }
+    },
+    "transfer": {
+      "heading": "Complimentary Transfer",
+      "body": "Book 3+ nights and enjoy complimentary transfers to/from the airport, train station, and Sirius beaches.",
+      "cta": "Learn More"
+    },
+    "social": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "vk": "VKontakte"
+    }
+  },
+  "gallery": {
+    "eyebrow": "GALLERY",
+    "heading": "Feel the Atmosphere",
+    "tabs": {
+      "all": "All",
+      "rooms": "Rooms",
+      "pool": "Pool",
+      "grounds": "Grounds",
+      "breakfast": "Breakfast"
+    },
+    "instagram": {
+      "text": "More photos on our Instagram",
+      "handle": "@sochi_white_house"
+    },
+    "lightbox": {
+      "close": "Close",
+      "prev": "Previous photo",
+      "next": "Next photo"
+    },
+    "items": {
+      "room1": { "category": "rooms", "caption": "Designer Room", "alt": "White House room interior" },
+      "room2": { "category": "rooms", "caption": "Bedroom with Balcony", "alt": "Bedroom overlooking the grounds" },
+      "room3": { "category": "rooms", "caption": "Family Suite", "alt": "Spacious family room" },
+      "room4": { "category": "rooms", "caption": "Bathroom", "alt": "Modern bathroom" },
+      "pool1": { "category": "pool", "caption": "Heated Pool", "alt": "Pool with evening lighting" },
+      "pool2": { "category": "pool", "caption": "Poolside Lounge", "alt": "Loungers by the pool" },
+      "pool3": { "category": "pool", "caption": "Second Pool", "alt": "Second heated pool" },
+      "grounds1": { "category": "grounds", "caption": "Guest House Exterior", "alt": "White House facade" },
+      "grounds2": { "category": "grounds", "caption": "Gardens & Grounds", "alt": "Lush landscaped grounds" },
+      "grounds3": { "category": "grounds", "caption": "BBQ Area", "alt": "Outdoor barbecue area" },
+      "grounds4": { "category": "grounds", "caption": "Evening View", "alt": "Guest house at dusk" },
+      "breakfast1": { "category": "breakfast", "caption": "Breakfast by Irina", "alt": "Delicious breakfast spread" },
+      "breakfast2": { "category": "breakfast", "caption": "Dining Area", "alt": "Cozy breakfast nook" }
+    }
+  },
+  "reviews": {
+    "eyebrow": "GUEST REVIEWS",
+    "ratingMeta": "out of 5 · 19 reviews on Yandex Maps",
+    "platform": "Yandex Maps",
+    "cta": "Read all reviews on Yandex Maps",
+    "items": {
+      "nina": {
+        "author": "Nina Shtaros",
+        "date": "December 30",
+        "text": "We've come back here as a family for the third time! The location is a dream — the airport is just 7 minutes away. Magical heated pools! The house itself is a masterpiece — stunning renovation and crystal cleanliness."
+      },
+      "vyacheslav": {
+        "author": "Vyacheslav Artemyev",
+        "date": "September 8",
+        "text": "Beautiful, clean rooms with brand-new renovation. Snow-white fluffy towels and crisp linens. Two heated pools with crystal-clear water. Huge thanks to host Irina for the delicious breakfasts!"
+      },
+      "lada": {
+        "author": "Lada",
+        "date": "March 15",
+        "text": "Rooms in Krasnaya Polyana are pricey, but here you can ski and stroll to the sea. We'll only come back here. The breakfasts are superb!"
+      },
+      "victoria": {
+        "author": "Victoria L.",
+        "date": "October 24",
+        "text": "Excellent hotel. Clean rooms, great location, delicious breakfasts. Parking available. Very pleasant staff."
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "GET IN TOUCH",
+    "heading": "Reserve Your Stay",
+    "subheading": "We'll respond within 1 hour",
+    "contact": {
+      "heading": "Contacts",
+      "phone": "+7 (962) 157-44-97",
+      "phoneLabel": "Calls · 09:00 – 22:00",
+      "whatsapp": "WhatsApp",
+      "telegramLabel": "Telegram",
+      "whatsappCta": "Message on WhatsApp",
+      "whatsappNow": "Message Now",
+      "telegram": "@SochiWhiteHouse",
+      "telegramCta": "Message on Telegram",
+      "vk": "vk.com/sochiwhitehouse",
+      "address": "Krasnodarsky Krai, Sochi, Ivanovskaya St., 2/17"
+    },
+    "form": {
+      "heading": "Booking Inquiry",
+      "subheading": "We'll contact you to confirm",
+      "name": "Your Name",
+      "contact": "Phone or Email",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "guests": "Number of Guests",
+      "room": "Room Type",
+      "message": "Message",
+      "messagePlaceholder": "Special requests, questions...",
+      "guestsPlaceholder": "Select",
+      "roomPlaceholder": "Select room",
+      "submit": "Send Inquiry",
+      "submitting": "Sending...",
+      "success": "Sent! We'll be in touch.",
+      "error": "Error. Please try again.",
+      "required": "Required field",
+      "privacy": "By submitting, you agree to our privacy policy."
+    },
+    "roomOptions": {
+      "standard": "Standard",
+      "deluxe": "Deluxe",
+      "family": "Family",
+      "apartment": "Apartment Suite"
+    },
+    "guestOptions": {
+      "1": "1 guest",
+      "2": "2 guests",
+      "3": "3 guests",
+      "4": "4 guests",
+      "5plus": "5+ guests"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "text": "Page not found",
+    "home": "Back to Home"
+  },
+  "footer": {
+    "logo": "WHITE HOUSE",
+    "locationTag": "SOCHI · ADLER · RUSSIA",
+    "description": "Designer-renovated guest house in Adler. Comfort, cleanliness, and warm hospitality by the Black Sea.",
+    "navHeading": "NAVIGATION",
+    "contactsHeading": "CONTACTS",
+    "factsHeading": "WHITE HOUSE",
+    "phone": "+7 (962) 157-44-97",
+    "whatsappLink": "WhatsApp",
+    "telegramLink": "Telegram",
+    "addressLine1": "Krasnodar Krai, Sochi",
+    "addressLine2": "Ivanovskaya St., 2/17",
+    "open24h": "Open 24/7",
+    "rights": "© {year} White House Sochi. All rights reserved.",
+    "agency": "",
+    "facts": {
+      "yandexRating": "4.9 ★ on Yandex Maps",
+      "renovation": "New designer renovation",
+      "parking": "Free parking",
+      "breakfast": "Breakfast included",
+      "transfer": "Free transfer*"
+    },
+    "social": {
+      "instagram": "Instagram",
+      "telegram": "Telegram",
+      "vk": "VKontakte",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "language": {
+    "ru": "RU",
+    "en": "EN",
+    "separator": "|",
+    "ariaLabel": "Language selection",
+    "switchToRu": "Switch to Russian",
+    "switchToEn": "Switch to English"
+  },
+  "common": {
+    "open": "Open",
+    "closed": "Closed",
+    "loading": "Loading..."
+  }
+}

@@ -1,0 +1,504 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colors */
+  --white: #ffffff;
+  --off-white: #f6f5f2;
+  --cream: #ede9e0;
+  --charcoal: #141414;
+  --deep-navy: #0b1628;
+  --gold: #c8a96e;
+  --gold-light: #e8d4a8;
+  --ocean: #1b4b7a;
+  --ocean-mist: #d6e8f5;
+  --glass: rgba(255, 255, 255, 0.08);
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --text-hero: clamp(3.5rem, 9vw, 8rem);
+  --text-h1: clamp(2.5rem, 5vw, 4.5rem);
+  --text-h2: clamp(1.8rem, 3vw, 2.8rem);
+  --text-h3: clamp(1.2rem, 2vw, 1.8rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+
+  /* Spacing (8pt grid) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --space-2xl: 12rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    @apply bg-off-white font-body text-charcoal antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-body;
+  }
+
+  .font-display {
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-off-white;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-sm py-[5rem] md:px-md md:py-[10rem];
+  }
+
+  .container-content {
+    @apply mx-auto w-full max-w-content px-sm md:px-md;
+  }
+
+  .glass-panel {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-tilt {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  .reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 600ms ease, transform 600ms ease;
+  }
+
+  .lang-crossfade {
+    transition: opacity 300ms ease;
+  }
+
+  .lang-crossfade[data-switching='true'] {
+    opacity: 0;
+  }
+
+  .nav-header {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-header--glass {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(20, 20, 20, 0.75);
+  }
+
+  .nav-header--hidden {
+    transform: translateY(-100%);
+  }
+
+  .nav-link {
+    @apply relative font-body text-[0.85rem] font-normal uppercase tracking-[0.12em] transition-colors duration-300;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    color: var(--gold);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .nav-cta {
+    @apply border border-gold px-[1.5rem] py-[0.5rem] font-body text-[0.85rem] uppercase tracking-[0.12em] text-gold transition-all duration-300;
+    border-radius: 2px;
+  }
+
+  .nav-cta:hover,
+  .nav-cta:focus-visible {
+    background: var(--gold);
+    color: var(--charcoal);
+  }
+
+  .nav-mobile-link {
+    @apply font-display text-[3rem] font-light italic transition-colors hover:text-gold;
+    color: var(--white);
+  }
+
+  .hero-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(11, 22, 40, 0.72) 0%,
+      rgba(20, 20, 20, 0.55) 100%
+    );
+  }
+
+  .hero-cta-primary {
+    @apply font-body text-[0.9rem] font-semibold uppercase tracking-[0.1em] transition-colors duration-300;
+    padding: 0.85rem 2.5rem;
+    border-radius: 2px;
+    background: var(--gold);
+    color: var(--charcoal);
+  }
+
+  .hero-cta-primary:hover,
+  .hero-cta-primary:focus-visible {
+    background: var(--gold-light);
+  }
+
+  .hero-cta-secondary {
+    @apply border font-body text-[0.9rem] font-semibold uppercase tracking-[0.1em] transition-colors duration-300;
+    padding: 0.85rem 2.5rem;
+    border-radius: 2px;
+    border-color: rgba(255, 255, 255, 0.6);
+    color: var(--white);
+  }
+
+  .hero-cta-secondary:hover,
+  .hero-cta-secondary:focus-visible {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .hero-stats-bar {
+    background: rgba(11, 22, 40, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .hero-scroll-line {
+    width: 2px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero-scroll-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: hero-scroll-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .room-clip-image {
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 92% 100%, 0 100%);
+  }
+
+  .rooms-banner-clip {
+    clip-path: polygon(0 16px, 16px 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  }
+
+  .amenity-card {
+    width: 160px;
+    padding: 2rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    background: transparent;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .amenity-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(200, 169, 110, 0.4);
+  }
+
+  .amenity-icon-wrap {
+    width: 56px;
+    height: 56px;
+    background: radial-gradient(
+      circle,
+      rgba(200, 169, 110, 0.15) 0%,
+      transparent 70%
+    );
+    transition: background 0.3s ease;
+  }
+
+  .amenity-card:hover .amenity-icon-wrap {
+    background: radial-gradient(
+      circle,
+      rgba(200, 169, 110, 0.35) 0%,
+      transparent 70%
+    );
+  }
+
+  .amenity-pool-clip {
+    clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%);
+  }
+
+  .location-gradient {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--off-white) 100%);
+  }
+
+  .location-map-clip {
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%);
+  }
+
+  .gallery-clip-a {
+    clip-path: polygon(0 0, 100% 0, 100% 94%, 95% 100%, 0 100%);
+  }
+
+  .gallery-clip-b {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%, 0 94%);
+  }
+
+  .gallery-clip-c {
+    clip-path: polygon(2% 0, 100% 0, 98% 100%, 0 100%);
+  }
+
+  .gallery-clip-d {
+    clip-path: polygon(0 2%, 98% 0, 100% 98%, 2% 100%);
+  }
+
+  .booking-contact-clip {
+    clip-path: polygon(0 0, 94% 0, 100% 5%, 100% 95%, 94% 100%, 0 100%);
+  }
+
+  .booking-contact-item {
+    padding: 1rem 1.5rem;
+    border-left: 2px solid var(--gold);
+    transition: background 0.2s ease;
+  }
+
+  .booking-contact-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .booking-field-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(11, 22, 40, 0.15);
+    border-bottom: 2px solid rgba(20, 20, 20, 0.2);
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    background: var(--white);
+    transition: border-color 0.2s ease;
+  }
+
+  .booking-field-input:focus {
+    outline: none;
+    border-bottom-color: var(--gold);
+  }
+
+  .booking-field-input--error {
+    border-bottom-color: #dc2626;
+  }
+
+  .booking-submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--charcoal);
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .booking-submit-btn:hover:not(:disabled) {
+    background: #b8985e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200, 169, 110, 0.4);
+  }
+
+  .booking-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .review-card {
+    width: 360px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 3px solid var(--gold);
+    border-radius: 4px;
+  }
+
+  .reviews-carousel-mask {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+
+  .gallery-tile {
+    cursor: zoom-in;
+  }
+
+  .gallery-masonry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .gallery-masonry {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-masonry {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .distance-card {
+    min-width: 200px;
+    padding: 1rem 1.5rem;
+    background: var(--white);
+    border-left: 3px solid var(--gold);
+    box-shadow: 0 8px 32px rgba(11, 22, 40, 0.08);
+  }
+
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .amenities-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .amenities-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  .rooms-header-gradient {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--off-white) 100%);
+  }
+
+  .about-clip-main {
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 0 100%);
+  }
+
+  .about-clip-left {
+    clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);
+  }
+
+  .about-clip-right {
+    clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  @keyframes hero-scroll-pulse {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateY(54px);
+      opacity: 0.2;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@layer utilities {
+  .hadid-flow {
+    will-change: transform;
+  }
+
+  .hadid-flow-path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.35;
+  }
+
+  .hadid-flow-path--light {
+    stroke: var(--white);
+    opacity: 0.2;
+  }
+
+  .hadid-flow-fill {
+    fill: var(--glass);
+    stroke: var(--gold-light);
+    stroke-width: 0.5;
+    opacity: 0.15;
+  }
+}
