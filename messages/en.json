@@ -305,6 +305,12 @@
       "3": "3 guests",
       "4": "4 guests",
       "5plus": "5+ guests"
+    },
+    "virtualTour": {
+      "eyebrow": "EXPERIENCE THE VILLA",
+      "heading": "Virtual 360° Tour & 3D Preview",
+      "desc": "Walk through the terraces, pools, and luminous interiors from anywhere.",
+      "cta": "Start Virtual Tour"
     }
   },
   "notFound": {
@@ -388,11 +394,5 @@
     "closing": "Every destination tells a new story. We are happy to help plan the perfect day for you.",
     "inquire": "Book an Excursion",
     "viewMap": "View all on the map"
-  },
-  "virtualTour": {
-    "eyebrow": "EXPERIENCE THE VILLA",
-    "heading": "Virtual 360° Tour & 3D Preview",
-    "desc": "Walk through the terraces, pools, and luminous interiors from anywhere.",
-    "cta": "Start Virtual Tour"
   }
 }
